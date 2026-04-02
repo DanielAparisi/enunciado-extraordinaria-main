@@ -51,6 +51,7 @@ public class Receta {
         for ( int i = 0; i<maxInstrucciones; i++){
             copiaInstrucciones[i]= instrucciones[i];
         }
+        return copiaInstrucciones;
     }
 
     public int agregarIngrediente(String ingrediente) {
