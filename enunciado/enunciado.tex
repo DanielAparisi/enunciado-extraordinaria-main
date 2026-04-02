@@ -1,0 +1,1096 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sullivan Business Report
+% LaTeX Template
+% Version 1.0 (May 5, 2022)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Author:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	CLASS, PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+    a4paper, % Paper size, use either a4paper or letterpaper
+    12pt, % Default font size, the template is designed to look good at 12pt so it's best not to change this
+    %unnumberedsections, % Uncomment for no section numbering
+]{CSSullivanBusinessReport}
+
+\usepackage[spanish,es-noquoting,es-noshorthands,es-tabla,es-nodecimaldot]{babel}
+
+\usepackage{ccicons}
+\usepackage{minted}
+\usemintedstyle{manni}
+
+\usepackage{fontspec}
+
+\setmonofont{inconsolata}
+
+\addbibresource{referencias.bib} % BibLaTeX bibliography file
+
+\renewcommand{\listingscaption}{Listado}
+\renewcommand{\listoflistingscaption}{Listados}
+
+
+\usepackage{fontawesome}
+\usepackage[most]{tcolorbox}
+
+\usepackage{cleveref}
+\crefname{listing}{listado}{listados}
+
+\crefname{table}{tabla}{tablas}
+
+\usepackage{fancyvrb}
+%\fvset{showspaces=true}
+\SaveVerb{verbspace}! !
+\newcommand{\espacio}{\UseVerb{verbspace}}%
+
+\usepackage{caption}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+
+%----------------------------------------------------------------------------------------
+%	REPORT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\reporttitle{Recetario y planificador de comidas} % The report title to appear on the title page and page headers, do not create manual new lines here as this will carry over to page headers
+
+\reportsubtitle{Proyecto de la asignatura Taller de Programación\\ Convocatoria ordinaria, curso 2025-2026} % Report subtitle, include new lines if needed
+
+\reportauthors{E. T. S. de Ingeniería de Sistemas Informáticos\\\smallskip Universidad Politécnica de Madrid} % Report authors/group/department, include new lines if needed
+
+\reportdate{10 de febrero de 2026} % Report date, include new lines for additional information if needed
+
+%\rightheadercontent{\includegraphics[width=4cm]{logo.pdf}} % The content in the right header, you may want to add your own company logo or use your company/department name or leave this command empty for no right header content
+\rightheadercontent{}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\thispagestyle{empty} % Suppress headers and footers on this page
+
+\begin{fullwidth} % Use the whole page width
+    \vspace*{-0.075\textheight} % Pull logo into the top margin
+    
+    \hfill\includegraphics[width=10cm]{logo.pdf} % Company logo
+
+    \vspace{0.15\textheight} % Vertical whitespace
+
+    \parbox{0.9\fulltextwidth}{\fontsize{50pt}{52pt}\selectfont\raggedright\textbf{\reporttitle}\par} % Report title, intentionally at less than full width for nice wrapping. Adjust the width of the \parbox and the font size as needed for your title to look good.
+    
+    \vspace{0.03\textheight} % Vertical whitespace
+    
+    {\LARGE\textit{\textbf{\reportsubtitle}}\par} % Subtitle
+    
+    \vfill % Vertical whitespace
+    
+    {\Large\reportauthors\par} % Report authors, group or department
+    
+    \vfill\vfill\vfill % Vertical whitespace
+    
+    {\large\reportdate\par} % Report date
+\end{fullwidth}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	DISCLAIMER/COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\thispagestyle{empty} % Suppress headers and footers on this page
+
+\begin{twothirdswidth} % Content in this environment to be at two-thirds of the whole page width
+    \footnotesize % Reduce font size
+    
+    \subsection*{Licencias}
+    
+    \textcopyright~[2026] [Jorge Dueñas Lerín][Raúl Lara Cabrera] 
+    
+    Este material se distribuye bajo una licencia \ccbyncsaeu~Atribución/Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional de Creative Commons. Para ver una copia de esta licencia, visite \url{https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es}. 
+    
+    Usted es libre de:
+    \begin{itemize}
+        \item Compartir — copiar y redistribuir el material en cualquier medio o formato
+        \item Adaptar — remezclar, transformar y construir a partir del material
+    \end{itemize}
+    Bajo los siguientes términos:
+    \begin{itemize}
+        \item \ccAttribution~Atribución — Usted debe dar crédito de manera adecuada, brindar un enlace a la licencia e indicar si se han realizado cambios. Puede hacerlo de cualquier manera razonable, pero no de una manera que sugiera que tiene el apoyo del licenciante o lo recibe por el uso que hace.
+        \item \ccNonCommercialEU~NoComercial — Usted no puede utilizar el material con fines comerciales.
+        \item \ccShareAlike~CompartirIgual — Si remezcla, transforma o crea a partir del material, debe distribuir su contribución bajo la misma licencia que el original.
+        \item No hay restricciones adicionales — No puede aplicar términos legales ni medidas tecnológicas que restrinjan legalmente a otras a hacer cualquier uso permitido por la licencia.
+    \end{itemize}
+
+    \subsection*{Atribución}
+
+    El enunciado de esta práctica se ha elaborado con \LaTeX, basándose en la plantilla ``Sullivan Business Report'' de Vel, publicada en \url{https://www.LaTeXTemplates.com}, que se distribuye bajo una licencia \ccbyncsaeu~Atribución/Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional de Creative Commons.
+    
+    \subsection*{Contacto}
+    
+    Para cualquier duda o comentario sobre esta práctica, por favor, contacta con los profesores de la asignatura.
+    
+    \vfill % Push the following down to the bottom of the page
+    
+    \subsubsection*{Control de versiones}
+    
+    \scriptsize % Reduce font size further
+    
+    \begin{tabular}{@{} L{0.05\linewidth} L{0.15\linewidth} L{0.6\linewidth} @{}} % Column widths specified here, change as needed for your content
+        \toprule
+        v1.1 & 10-02-2026 & Corregido el enunciado. Separado lógica de interfaz de usuario. \\
+        v1.0 & 15-11-2024 & Versión final del enunciado de la práctica.\\
+        \bottomrule
+    \end{tabular}
+\end{twothirdswidth}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+\begin{twothirdswidth} % Content in this environment to be at two-thirds of the whole page width
+    \tableofcontents % Output the table of contents, automatically generated from the section commands used in the document
+\end{twothirdswidth}
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	SECTIONS
+%----------------------------------------------------------------------------------------
+
+\section{Introducción}
+La organización y planificación de las comidas es una tarea cotidiana que muchas personas enfrentan a diario. ¿Qué pasaría si pudieras simplificar este proceso utilizando tus habilidades de programación? En esta práctica, desarrollarás una aplicación de consola en \texttt{Java} para gestionar un libro de recetas y planificar las comidas de una semana, combinando creatividad y programación para resolver un problema real.
+
+Este proyecto te permitirá poner en práctica conceptos fundamentales de programación, como la lectura y escritura desde la consola, la manipulación de arrays, el diseño de funciones y el uso de estructuras de control.
+
+Al finalizar el proyecto, habrás creado una herramienta funcional que permitirá:
+\begin{enumerate}
+    \item Registrar y consultar recetas, incluyendo ingredientes y pasos de preparación.
+    \item Organizar un plan semanal de comidas basado en las recetas disponibles.
+\end{enumerate}
+
+Este proyecto no solo fortalecerá tus habilidades técnicas en \texttt{Java}, sino que también fomentará tu capacidad de abordar problemas desde una perspectiva lógica y estructurada, así como tu capacidad para resolver problemas con la programación.
+
+\subsection{Preparación del entorno de desarrollo} % Second level section
+
+Para el desarrollo de este proyecto, podrás utilizar cualquier entorno de desarrollo integrado (IDE) que prefieras, aunque el soporte completo será ofrecido únicamente para \texttt{IntelliJ IDEA}, un potente IDE de \texttt{JetBrains} ampliamente utilizado en la industria y de código libre (licencia Apache 2.0) en su versión Community Edition, y para el cual, además, tenemos licencia educativa\sidecite{jetbrains-education} toda la comunidad universitaria.
+
+El esqueleto del proyecto se encuentra disponible en un repositorio del \texttt{Gitlab} de la escuela. Todos los estudiantes tienen una cuenta creada en la plataforma y pueden acceder con su número de matrícula y su contraseña \url{https://gitlab.etsisi.upm.es/}.
+
+El repositorio de la práctica pertenece a los profesores de la asignatura con lo que no podrás modificarlo. Este repositorio está disponible de forma pública y es software libre con lo que puedes crear tu propia copia y hacer modificaciones sobre ella. Esta acción acción recibe el nombre de \texttt{fork} (bifurcación). Para ello, sigue los siguientes pasos:
+
+\begin{fullwidth}
+1º Accede al repositorio del proyecto:
+
+\href{https://gitlab.etsisi.upm.es/tallerdeprogramacion/2526/enunciado-extraordinaria}{https://gitlab.etsisi.upm.es/tallerdeprogramacion/2526/enunciado-extraordinaria}
+
+
+2º Haz un fork del proyecto:
+
+\includegraphics[width=\textwidth]{Images/tp-fork-ini-mark.png}
+
+3º Configura la visibilidad y asócialo a tu usuario (Solo lo hará 1 persona del grupo)
+
+\includegraphics[width=\textwidth]{Images/tp-fork-mark.png}
+
+4º Clona tu nuevo repositorio en tu equipo y comienza a trabajar en tu copia del proyecto.
+
+
+\begin{itemize}
+    \item Si utilizas \texttt{IntelliJ IDEA}, puedes clonar el repositorio directamente desde el IDE. Para ello, selecciona la opción ``Clone Repository'' en el menú de inicio y pega la URL de tu repositorio.
+    \item Si vas a trabajar desde la línea de comandos, puedes clonar el repositorio con el comando \texttt{git clone} seguido de la URL de tu repositorio.
+\end{itemize}
+
+5º No te olvides de \textit{añadir al resto de integrantes como miembros} en tu repositorio (en \texttt{Manage - Members}).
+
+\end{fullwidth}
+
+Tras estas acciones podrás comenzar a utilizar el control de versiones git y sincronizar el trabajo sobre el código.
+
+\begin{quote}
+    \textbf{IMPORTANTE:} queda fuera del alcance de esta asignatura el uso de control de versiones. Existen prácticas opcionales en el \texttt{Moodle}. El uso de git es opcional aunque lo \textbf{recomendamos}.  
+\end{quote}
+
+Para finalizar esta sección, un último detalle. El proyecto se ha creado con \texttt{Maven}\sidecite{Redmond2008Jan}, un sistema de automatización de compilación y gestión de dependencias. Si utilizas \texttt{IntelliJ IDEA}, el IDE se encargará de importar el proyecto y configurar \texttt{Maven} automáticamente. Si trabajas desde la línea de comandos, puedes compilar el proyecto con el comando \texttt{mvn compile}. En el caso de que quieras gestionar las dependencias del proyecto manualmente, en la~\Cref{tab:dependencias-proyecto} se detallan las dependencias necesarias para el proyecto
+\begin{margintable}
+	\footnotesize
+	\caption{Dependencias del proyecto.}\label{tab:dependencias-proyecto}
+	\begin{tabular}{L{0.3\linewidth} L{0.6\linewidth}}
+		\toprule
+		\textbf{Dep.} & \textbf{Versión} \\
+		\midrule
+		JDK & 22\\
+		JUnit & 5.8.1\\
+		\bottomrule
+	\end{tabular}
+\end{margintable}
+\section{Descripción y requisitos del proyecto}
+El objetivo de este proyecto es desarrollar un sistema en Java que permita gestionar y planificar viajes. Los estudiantes deberán implementar varias clases y métodos para cumplir con los requisitos especificados.
+
+%TODO: TUI, primera vez que leo algo de esto. En Wikipedia se refiere a otro concepto.
+
+\subsection{Descripción del proyecto}
+La herramienta a desarrollar es lo que se conoce como una aplicación de línea de comandos (CLI, por sus siglas en inglés). La interfaz de usuario será textual, sin gráficos ni interacción con el ratón. El programa se ejecutará en la terminal de un sistema operativo, lo que se conoce como Text-based User Interface (TUI)\sidenote{Aunque pueda parecer algo del pasado, las TUI están a la orden del día. Echa un vistazo al siguiente \href{https://terminaltrove.com}{\color{blue}enlace}}. Para la realización del proyecto se proporciona un esquema de clases y métodos que los estudiantes deberán completar. Se usarán los conceptos de programación ya trabajados en la asignatura de Fundamentos de Programación. Para la realización del proyecto se proporciona un esquema de clases y métodos que los estudiantes deberán completar. Se usarán los conceptos de programación ya trabajados en la asignatura de Fundamentos de Programación.
+
+\subsection{Componentes a desarrollar}
+
+La arquitectura del sistema se divide en cinco componentes, como se puede observar en la~\Cref{tab:componentes-desarrollar}. Cada componente tiene una funcionalidad específica y se encarga de gestionar una parte del sistema.
+
+\begin{table*} % Use the table* environment for full width tables
+    \caption{Componentes a desarrollar.}\label{tab:componentes-desarrollar}
+    \begin{tabular}{C{0.03\linewidth} L{0.3\linewidth} L{0.55\linewidth}}
+        \toprule
+        \textit{\#} & \textbf{Componente} & \textbf{Descripción} \\
+        \midrule
+        \textit{1} & \texttt{Receta} & Representa una receta con un nombre, ingredientes e instrucciones. Permite agregar ingredientes e instrucciones. Proporciona métodos para obtener información sobre la receta.\\
+        \textit{2} & \texttt{LibroDeRecetas} & Almacena un conjunto de recetas. Permite agregar, buscar y eliminar recetas. Permite guardar y cargar recetas desde archivos.\\
+        \textit{3} & \texttt{PlanificadorSemanal} & Permite planificar recetas para cada día de la semana así como guardar el plan semanal en un archivo.\\
+        \textit{4} & \texttt{InterfazUsuario} & Gestiona la interacción con el usuario a través de un menú en consola.\\
+        \textit{5} & \texttt{Utilidades} & Proporciona métodos de utilidad para la entrada de datos por teclado.\\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+A continuación se detallan los requisitos de cada componente.
+
+\subsubsection{La receta}\label{sec:receta}
+
+El componente \texttt{Receta} representa una receta de cocina. Cada receta tiene un nombre, una lista de ingredientes y una lista de instrucciones. El componente debe proporcionar métodos para agregar ingredientes e instrucciones a la receta, así como para obtener información sobre la receta.\nonumsidenote[-2cm]{El componente \texttt{Receta} es fundamental para el funcionamiento del sistema. Asegúrate de implementar correctamente los métodos necesarios.}
+
+El número máximo de ingredientes e instrucciones que puede tener una receta se especifican como párametros de ejecución. La clase \texttt{Receta} define constantes para representar los posibles resultados de las operaciones de agregado\sidenote{Este enfoque permite separar la lógica de negocio (en \texttt{Receta}) de la presentación (en \texttt{InterfazUsuario}), facilitando el mantenimiento y las pruebas del código.}:
+
+\begin{code}
+\caption{Constantes de códigos de error en la clase Receta.}\label{lst:codigos-error-receta}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos,
+]
+{java}
+public static final int EXITO = 0;
+public static final int ERROR_VALOR_INVALIDO = 1;
+public static final int ERROR_INGREDIENTES_COMPLETOS = 2;
+public static final int ERROR_INSTRUCCIONES_COMPLETAS = 3;
+\end{minted}
+\end{code}
+
+La funcionalidad que nos permite agregar ingrediente se encapsula en el método 
+
+\mintinline[fontsize=\footnotesize]{java}|public int agregarIngrediente(String ingrediente)|
+
+que recibe como parámetros el nombre del ingrediente. La funcionalidad de agregar instrucción se encapsula en el método
+
+\mintinline[fontsize=\footnotesize]{java}|public int agregarInstruccion(String instruccion)|
+
+que recibe como parámetro la instrucción.
+
+Ambos métodos devuelven un código entero que indica el resultado de la operación\sidenote{\texttt{EXITO} si se ha realizado la operación correctamente, \texttt{ERROR\_VALOR\_INVALIDO} si el parámetro es null o vacío, \texttt{ERROR\_INGREDIENTES\_COMPLETOS} o \texttt{ERROR\_INSTRUCCIONES\_COMPLETAS} si se ha superado el máximo permitido}. Es responsabilidad de la clase \texttt{InterfazUsuario} interpretar estos códigos y mostrar los mensajes apropiados al usuario. Por ejemplo, cuando se intenta agregar más ingredientes o instrucciones de los permitidos, \texttt{InterfazUsuario} mostrará:
+
+
+\begin{listing}[H]
+\caption{Mensajes de error al intentar añadir ingredientes e instrucciones, respectivamente, si se supera el máximo.}\label{lst:error-maximo-receta}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos,
+]
+{text}
+No se pueden añadir más ingredientes.
+No se pueden añadir más instrucciones.
+\end{minted}
+\end{listing}
+
+
+Una funcionalidad adicional que se pide es la de obtener la información de la receta. Esta funcionalidad se encapsula en el método \mintinline[fontsize=\footnotesize]{java}|public String toString()|, que devuelve una cadena de texto con la información de la receta en el siguiente formato\sidenote{Ten \textbf{muy en cuenta} los espacios y saltos de línea en la salida}:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Receta: nombre de la receta
+Ingredientes:
+- Ingrediente 1
+- Ingrediente n
+Instrucciones:
+1. Instrucción 1
+2. Instrucción m
+\end{minted}
+\caption{Formato de representación textual de una receta}\label{lst:receta-tostring}
+\end{code}
+
+\nonumsidenote[-4cm]{Recomendamos utilizar \texttt{StringBuilder} en lugar de la concatenación de cadenas de caracteres, especialmente cuando manipulas grandes cantidades de texto o realizas múltiples operaciones de inserción. La superior eficiencia y rendimiento del \texttt{StringBuilder} hacen que sea el método más óptimo para estas tareas en programación.}
+
+Para guardar y cargar las recetas a partir de un fichero de texto se usa una representación textual \textbf{simplificada} de las recetas. Esta representación se genera en el método
+
+\mintinline[fontsize=\footnotesize]{java}|public String toRawString()|
+
+y devuelve la información de la receta, incluyendo el nombre, los ingredientes y las instrucciones, en el siguiente formato compacto\sidenote{Presta atención a las diferencias con la representación textual completa mostrada en el~\Cref{lst:receta-tostring}. Fíjate también en el separador de recetas al final del texto.}:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Nombre de la receta
+Ingrediente 1
+Ingrediente n
+INSTRUCCIONES
+Instrucción 1
+Instrucción m
+-----
+\end{minted}
+\caption{Formato de representación textual simplificada y compacta de una receta}\label{lst:receta-torawstring}
+\end{code}
+
+
+Para cargar desde un fichero y generar una receta tendremos un método estático que espera recibir un \texttt{BufferedReader} ya abierto desde el que se están cargando recetas (ver \texttt{LibroRecetas}).
+
+\mint[fontsize=\footnotesize]{java}|public static Receta fromBufferedReader(BufferedReader reader, int maxIngredientes, int maxInstrucciones)|
+
+Este método lee la información de una receta desde el \texttt{BufferedReader} proporcionado y devuelve un objeto \texttt{Receta} con la información leída. Los parámetros \texttt{maxIngredientes} y \texttt{maxInstrucciones} indican el número máximo de ingredientes e instrucciones que puede contener la receta. Si el archivo contiene más ingredientes o instrucciones de los especificados, la información se truncará.
+
+Además de los métodos anteriores, el componente \texttt{Receta} debe proporcionar los métodos auxiliares que son necesarios para la correcta implementación de los otros componentes y se detallan a continuación:
+
+\mint[fontsize=\scriptsize]{java}|public Receta(String nombre, int maxIngredientes, int maxInstrucciones)|
+
+Constructor de la clase que recibe como parámetros el nombre de la receta, el número máximo de ingredientes y el número máximo de instrucciones que puede contener la receta.
+
+\mint[fontsize=\scriptsize]{java}|public String getNombre()|
+
+Devuelve el nombre de la receta.
+
+\mint[fontsize=\scriptsize]{java}|public int getMaxIngredientes()|
+
+Devuelve el número máximo de ingredientes que puede contener la receta.
+
+\mint[fontsize=\scriptsize]{java}|public int getMaxInstrucciones()|
+
+Devuelve el número máximo de instrucciones que puede contener la receta.
+
+\mint[fontsize=\scriptsize]{java}|public List<String> getIngredientes()|
+
+Devuelve la lista de ingredientes de la receta.
+
+\mint[fontsize=\scriptsize]{java}|public List<String> getInstrucciones()|
+
+Devuelve la lista de instrucciones de la receta.
+
+\mint[fontsize=\scriptsize]{java}|public boolean ingredientesCompletos()|
+\mint[fontsize=\scriptsize]{java}|public boolean instruccionesCompletas()|
+
+Devuelve \texttt{true} si la receta tiene el número máximo de ingredientes e instrucciones, respectivamente, \texttt{false} en otro caso.
+
+\mint[fontsize=\scriptsize]{java}|public int numIngredientes()|
+\mint[fontsize=\scriptsize]{java}|public int numInstrucciones()|
+
+Devuelve el número de ingredientes e instrucciones de la receta, respectivamente.
+
+
+
+
+\subsubsection{El libro de recetas}\label{sec:libro-recetas}
+
+El componente \texttt{LibroDeRecetas} es el encargado de almacenar un conjunto de recetas. Debe proporcionar métodos para agregar, buscar y eliminar recetas, así como para guardar y cargar recetas desde archivos. A continuación, nos centramos en cada una de las funcionalidades que debe implementar este componente.
+
+\paragraph{Agregar receta}
+
+La funcionalidad que nos permite agregar una receta se encapsula en el método
+
+\mintinline[fontsize=\footnotesize]{java}|public int agregarReceta(Receta receta)|
+
+que recibe como parámetro\sidenote{Será tu responsabilidad comprobar si la receta es un valor nulo.} la receta a añadir. El método devuelve un valor entero que indica si la operación se ha realizado correctamente. Los posibles códigos son:
+
+\begin{code}
+\caption{Constantes de códigos de error en la clase LibroDeRecetas.}\label{lst:codigos-error-catalogo}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos,
+]
+{java}
+public static final int EXITO = 0;
+public static final int ERROR_RECETA_NULL = 1;
+public static final int ERROR_DEMASIADAS = 2;
+\end{minted}
+\end{code}
+
+Si se intenta añadir una receta a un libro que ya está completo, el método devuelve \texttt{ERROR\_DEMASIADAS}. Es responsabilidad de la clase \texttt{InterfazUsuario} interpretar este código y mostrar el mensaje apropiado al usuario:
+
+\begin{listing}[H]
+\caption{Mensaje de error al intentar añadir una receta si el libro está completo.}\label{lst:error-maximo-libro}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos,
+]
+{text}
+No se pueden añadir más recetas.
+\end{minted}
+\end{listing}
+
+El mecanismo de inserción de recetas en el libro no está especificado, por lo que puedes elegir la estructura de datos que consideres más adecuada para almacenar las recetas. Ten en cuenta que el libro de recetas tiene un tamaño fijo, que se especifica como parámetro de ejecución. Además, ten en cuenta que en el catálogo se permite borrar actividades.
+
+\paragraph{Eliminar receta}
+
+La funcionalidad que nos permite eliminar una receta se encapsula en el método
+
+\mintinline[fontsize=\footnotesize]{java}|public boolean eliminarReceta(Receta seleccionada)|
+
+que recibe como parámetro la receta a eliminar. Si la receta no se encuentra\sidenote{Encontrar una receta significa que son \textbf{el mismo} objeto.} en el libro, el método devuelve \texttt{false}. En caso contrario, devuelve \texttt{true}.
+
+\paragraph{Buscar receta}
+
+La funcionalidad que nos permite buscar una receta se encapsula en el método
+
+\mintinline[fontsize=\footnotesize]{java}|public Receta[] buscarRecetaPorNombre(String texto)|
+
+que recibe como parámetro el texto a buscar en el nombre de las recetas. El método devuelve un array con aquellas recetas que contienen el texto de búsqueda como subcadena\sidenote{Puedes usar el método \texttt{contains} de la clase \texttt{String}} del nombre. Si no se encuentra ninguna receta que cumpla con el criterio de búsqueda, el método debe devolver un array vacío.
+
+\paragraph{Guardar y cargar recetas}
+
+Para guardar y cargar las recetas a partir de un fichero de texto se usa una representación textual \textbf{simplificada} de las recetas (ver~\Cref{lst:receta-torawstring}).
+
+El proceso de guardado de las recetas se realiza en el método
+
+\mintinline[fontsize=\footnotesize]{java}|public void guardarRecetasEnArchivo(String nombreArchivo)|
+
+que recibe como parámetro el nombre del archivo en el que se guardarán las recetas. Hay que usar el método \texttt{toRawString} de la clase \texttt{Receta} para obtener la representación textual de cada receta, y escribir esta información en el archivo de texto\sidenote{En el caso de que el fichero a escribir ya exista, se \textbf{sobreescribirá} su contenido}.
+
+El proceso de carga de las recetas se realiza en el método
+
+\begin{minted}[fontsize=\footnotesize]{java}
+public void cargarRecetasDeArchivo(String nombreArchivo, 
+                                   int maxIngredientes,
+                                   int maxInstrucciones)
+\end{minted}
+
+que recibe como parámetros el nombre del archivo del que se cargarán las recetas y el número máximo de ingredientes e instrucciones que puede tener cada receta. El método debe leer el contenido del archivo de texto, crear las recetas correspondientes a partir de la información leída y añadirlas al libro de recetas.
+
+Es importante tener en cuenta que el método de carga debe ser capaz de cargar recetas de un archivo que haya sido guardado previamente con el método para escribirlas en el fichero. Además, el método debe ser capaz de cargar recetas de un archivo que contenga un número de recetas superior al tamaño del libro de recetas, en cuyo caso se deben cargar únicamente las primeras recetas que quepan en el libro.
+
+Al tratarse de operaciones con ficheros, es necesario manejar las excepciones que puedan surgir durante la lectura y escritura de los archivos. Sin embargo, no es necesario que se capturen las excepciones en el propio método. En su lugar, se deben lanzar las excepciones para que sean manejadas en el método que llama a \texttt{guardarRecetasEnArchivo} y \texttt{cargarRecetasDeArchivo}.
+
+\paragraph{Métodos auxiliares}
+
+Además de los métodos anteriores, el componente \texttt{LibroDeRecetas} debe proporcionar los métodos auxiliares que son necesarios para la correcta implementación de los otros componentes y se detallan a continuación:
+
+\mintinline[fontsize=\footnotesize]{java}|public LibroDeRecetas(int maxRecetasEnLibro)|
+
+Constructor de la clase que recibe como parámetro el número máximo de recetas que puede contener el libro.
+
+\mintinline[fontsize=\footnotesize]{java}|public int numRecetas()|
+
+Devuelve el número de recetas que contiene el libro.
+
+\mintinline[fontsize=\footnotesize]{java}|public boolean recetasCompletas()|
+
+Devuelve \texttt{true} si el libro de recetas está completo, es decir, si contiene el número máximo de recetas, \texttt{false} en otro caso.
+
+
+
+
+\subsubsection{El planificador semanal}\label{sec:planificador-semanal}
+
+El componente \texttt{PlanificadorSemanal} es el encargado de planificar las comidas para cada día de la semana y de guardar el plan semanal en un archivo. Para simplificar este módulo solo se permitirá planificar una receta por día de la semana.
+
+A continuación, nos centramos en cada una de las funcionalidades que debe implementar este componente.
+
+\paragraph{Planificar comidas}
+
+La funcionalidad que nos permite planificar una comida para un día de la semana se encapsula en el método
+
+\mintinline[fontsize=\footnotesize]{java}|public void agregarComida(int dia, Receta receta)|
+
+que recibe como parámetros el día de la semana en el que se planifica la comida y la receta que se va a añadir. El día de la semana se representa como un número entero, siendo 0 el lunes y 6 el domingo (ver~\Cref{tab:int-semana}). Si ya hay una receta planificada para el día especificado, la receta anterior se reemplaza por la nueva.
+
+\begin{margintable}
+    \footnotesize
+    \caption{Días de la semana representados como números enteros.}\label{tab:int-semana}
+    \begin{tabular}{C{0.1\linewidth} L{0.4\linewidth}}
+        \toprule
+        \textbf{\#} & \textbf{Día}\\
+        \midrule
+        0 & Lunes\\
+        1 & Martes\\
+        2 & Miércoles\\
+        3 & Jueves\\
+        4 & Viernes\\
+        5 & Sábado\\
+        6 & Domingo\\
+        \bottomrule
+    \end{tabular}
+\end{margintable}
+
+Para no tener los números del 0 al 6 repartidos por el código, es recomendable definir constantes para representar cada día de la semana. Además se crearé un array de cadenas de texto con el nombre de los días de la semana para mostrar por pantalla.
+
+\paragraph{Representación textual del plan semanal}
+
+Para mostrar el plan semanal por pantalla, se debe proporcionar una representación textual del mismo. Esta representación debe mostrar las recetas planificadas para cada día de la semana. El método que genera esta representación textual es
+
+\mintinline[fontsize=\footnotesize]{java}|public String toString()|
+
+que devuelve una cadena de texto con el plan semanal en el siguiente formato:
+
+\begin{fullwidth}
+\begin{listing}[H]
+\caption{Formato de representación textual del plan semanal (ejemplo)}\label{lst:plan-semanal-tostring}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\tiny,
+linenos
+]
+{text}
+------------------------------------------------------------------------------------
+Lunes       Martes      Miércoles   Jueves      Viernes     Sábado      Domingo     
+------------------------------------------------------------------------------------
+Tortilla d.                         Gazpacho A.                         Tarta de M. 
+------------------------------------------------------------------------------------
+\end{minted}
+\end{listing}
+\end{fullwidth}
+
+Observa que la representación textual del plan semanal muestra las recetas planificadas para cada día de la semana. Si no hay ninguna receta planificada para un día en concreto, el hueco se deja vacío. La representación textual del plan semanal debe incluir un encabezado con los días de la semana y un separador entre el encabezado y las recetas planificadas. Además, cada receta planificada debe estar alineada con el día correspondiente.
+
+Como la longitud del nombre de cada receta puede variar se va a especificar una longitud fija de 12 para cada columna. Si el nombre de la receta es menor que 12, se rellenará con espacios a la derecha. Si el nombre de la receta es mayor que 11, se truncará a 10 caracteres y se añadirá un punto al final para indicar que se ha truncado.
+
+\begin{code}
+\caption{Constantes de ancho columna en la clase PlanSemanal.}\label{lst:ancho-columna}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos,
+]
+{java}
+public static final int ANCHO_COLUMNA = 12;
+public static final int MAX_RECETA_NOMBRE = 10;
+\end{minted}
+\end{code}
+
+\paragraph{Guardar plan semanal}
+
+Para guardar el plan semanal en un archivo de texto se usa una representación textual \textbf{simplificada} del plan semanal. En este caso no se genera la representación simplificada en un método aparte, sino que se realiza todo en el método de guardado:
+
+\mintinline[fontsize=\footnotesize]{java}|public void guardarPlanEnArchivo(String nombreArchivo)|
+
+que recibe como parámetro el nombre del archivo en el que se guardará el plan semanal. El método debe escribir la representación textual del plan semanal en el archivo de texto\sidenote{En el caso de que el fichero a escribir ya exista, se \textbf{sobreescribirá} su contenido}. El formato es el siguiente:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Lunes: Tortilla de Patatas
+Martes: ---
+Miércoles: ---
+Jueves: Gazpacho Andaluz
+Viernes: ---
+Sábado: ---
+Domingo: Tarta de Manzana
+\end{minted}
+\caption{Formato de representación textual simplificada y compacta del plan semanal (ejemplo)}\label{lst:plan-semanal-torawstring}
+\end{code}
+
+Observa que la representación textual del plan semanal muestra las recetas planificadas para cada día de la semana. Si no hay ninguna receta planificada para un día en concreto, se muestran tres guiones \texttt{---}. La representación textual del plan semanal debe incluir el nombre del día y la receta planificada, separados por dos puntos.
+
+\subsubsection{Utilidades}\label{sec:utilidades}
+
+El componente \texttt{Utilidades} proporciona métodos de utilidad para la entrada de datos por teclado. En concreto, se deben implementar los siguientes métodos:
+
+\mintinline[fontsize=\footnotesize]{java}|public static String leerCadena(Scanner teclado, String s)|
+
+Método que muestra el mensaje \texttt{s} por pantalla y lee una cadena de texto introducida por el usuario. El método no permite al usuario leer cadenas vacías. El método devuelve la cadena de texto leída.
+
+\begin{minted}[fontsize=\footnotesize]{java}
+public static int leerNumero(Scanner teclado,
+                             String mensaje,
+                             int minimo,
+                             int maximo)
+\end{minted}
+
+Método que muestra el mensaje \texttt{mensaje} por pantalla y lee un número entero introducido por el usuario. El método debe comprobar que el número introducido está en el rango \(\left [\mathrm{minimo},\mathrm{maximo}\right ]\) y, si no es así, volver a solicitar el número. El método devuelve el número entero leído.
+
+\begin{minted}[fontsize=\footnotesize]{java}
+public static int leerDiaDeLaSemana(Scanner teclado,
+                                    String mensaje)
+\end{minted}
+
+Método que muestra el mensaje \texttt{mensaje} por pantalla y lee un caracter introducido por el usuario que representa un día de la semana. El método debe comprobar que el caracter introducido se corresponde con un día de la semana (ver~\Cref{tab:char-semana}) y, si no es así, volver a solicitar el caracter. El método devuelve el número entero correspondiente al día que ha escrito el usuario (ver~\Cref{tab:int-semana}).
+
+\begin{margintable}
+    \footnotesize
+    \caption{Días de la semana representados como caracteres.}\label{tab:char-semana}
+    \begin{tabular}{C{0.2\linewidth} L{0.4\linewidth}}
+        \toprule
+        \textbf{Char} & \textbf{Día}\\
+        \midrule
+        L & Lunes\\
+        M & Martes\\
+        X & Miércoles\\
+        J & Jueves\\
+        V & Viernes\\
+        S & Sábado\\
+        D & Domingo\\
+        \bottomrule
+    \end{tabular}
+\end{margintable}
+
+\mintinline[fontsize=\footnotesize]{java}|public static int diaSemanaAPosicion(String dia)|
+
+Método que recibe como parámetro el caracter de un día de la semana (ver~\Cref{tab:char-semana}) y devuelve el número entero correspondiente a ese día (ver~\Cref{tab:int-semana}).
+
+\mintinline[fontsize=\footnotesize]{java}|public static String posicionADiaSemana(int pos)|
+
+Método que recibe como parámetro el número entero de un día de la semana (ver~\Cref{tab:int-semana}) y devuelve \textbf{el nombre completo} del día que corresponde a esa posición (ver~\Cref{tab:char-semana}).
+
+Lo métodos de la clase utilidades deben usar las constantes de la clase \texttt{PlanificadorSemanal} para comprobar los días de la semana.
+
+
+
+
+\subsubsection{La interfaz de usuario}\label{sec:interfaz-usuario}
+La interfaz de usuario es el componente que se encarga de gestionar la interacción con el usuario. Debe mostrar un menú con las opciones disponibles y permitir al usuario seleccionar una de ellas. Las opciones disponibles son las siguientes:
+
+\begin{enumerate}
+    \item Agregar Receta
+    \item Consultar/Editar Receta
+    \item Planificar Comidas
+    \item Guardar Recetas
+    \item Cargar Recetas
+    \item Guardar Plan Semanal
+    \item Salir
+\end{enumerate}
+
+El componente se encargará de llamar a los métodos correspondientes de los otros componentes para realizar las acciones solicitadas por el usuario, además de encargarse de la entrada y salida de los datos necesarios para realizar dichas acciones.
+
+Por ejemplo, si el usuario selecciona la opción de agregar receta, la interfaz de usuario se encargará de solicitar la información de la nueva receta al usuario y llamará al método correspondiente del componente que gestiona el libro de recetas.
+
+Una vez realizada la acción solicitada por el usuario, la interfaz de usuario debe volver a mostrar el menú de opciones. El programa debe seguir ejecutándose hasta que el usuario seleccione la opción de salir. Este bucle de ejecución se conoce como el bucle principal del programa, y se define en el método
+
+\mintinline[fontsize=\footnotesize]{java}|private void menuPrincipal(Scanner scanner)|
+
+A continuación se puede ver un ejemplo de cómo se debe mostrar el menú de opciones al usuario (observa que el menú se muestra en la consola, que el usuario debe introducir un número para seleccionar una opción y que se muestra un símbolo\sidenote{Se muestran los espacios en blanco de manera explícita usando el símbolo concreto \texttt{\textvisiblespace }~para que puedas generar una salida exactamente igual.} para representar los espacios en blanco \texttt{\textvisiblespace }):
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos,
+showspaces,
+escapeinside=||,
+]
+{text}
+--- Menú Principal ---
+1. Agregar Receta
+2. Consultar/Editar Receta
+3. Planificar Comidas
+4. Guardar Recetas
+5. Cargar Recetas
+6. Guardar Plan Semanal
+7. Salir
+
+Elige una opción:| |
+\end{minted}
+\caption{Menu principal y petición de acción al usuario}\label{lst:menu-principal}
+\end{code}
+
+
+A continuación, se detalla la funcionalidad que debe implementar la interfaz de usuario para cada una de las opciones del menú.
+
+\paragraph{Agregar Receta}
+
+La funcionalidad que permite agregar una receta se implementa en el método
+
+\mintinline[fontsize=\footnotesize]{java}|private void agregarReceta(Scanner scanner)|
+
+que recibe como parámetro un objeto de la clase \texttt{Scanner} para leer la entrada del usuario. El método debe solicitar al usuario el nombre de la receta. A continuación, debe solicitar al usuario que introduzca los ingredientes e instrucciones de la receta. Una vez introducidos los datos, el método debe crear un objeto de la clase \texttt{Receta} con la información proporcionada y añadir la receta al libro de recetas. Si la receta se añade correctamente, se debe mostrar un mensaje de éxito\sidenote[][-2cm]{Recuerda que los casos de prueba esperan estos mensajes en concreto, por lo que tienes que ser \textbf{preciso} con espacios y signos de puntuación.}:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Nombre de la receta: Gazpacho
+Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar):
+Tomate
+Pepino
+Aceite
+Ajo
+Agua
+fin
+Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar):
+Echar todos los ingredientes a la batidora
+Servir muy frío
+fin
+¡Receta agregada exitosamente!
+\end{minted}
+\caption{Ejemplo de funcionalidad Agregar receta}\label{lst:agregar-receta}
+\end{code}
+
+Fíjate en que el usuario debe introducir los ingredientes e instrucciones de la receta, una línea por cada uno, y escribir \texttt{fin} para indicar que ha terminado de introducir los datos. En el caso de que la receta no se haya podido añadir al libro, se debe mostrar el error \texttt{No se pudo añadir la receta.} por pantalla. En cualquier caso, el método debe volver al menú principal una vez finalizada la acción.
+
+Ten en cuenta que debemos tener en cuenta los posibles códigos de error de la clase \texttt{Receta} al agregar ingredientes e instrucciones, y el código de error de la clase \texttt{LibroDeRecetas} al agregar la receta al libro, para mostrar los mensajes de error correspondientes al usuario (ver~\Cref{lst:error-maximo-receta} y~\Cref{lst:error-maximo-libro}).
+
+\paragraph{Consultar/Editar Receta}
+
+La funcionalidad que permite consultar y editar una receta se implementa en el método
+
+\mintinline[fontsize=\footnotesize]{java}|private void consultarReceta(Scanner scanner)|
+
+que recibe como parámetro un objeto de la clase \texttt{Scanner} para leer la entrada del usuario. El método debe solicitar al usuario el texto a buscar dentro del nombre de las recetas que desea consultar o editar\sidenote{Si el usuario introduce \texttt{-FIN-} se cancela la búsqueda.}. Una vez realizada la consulta, se le muestra al usuario el listado de recetas resultante y se le pide que seleccione una de ellas. A continuación, se le muestra la información de la receta seleccionada y se le muestra el menú de edición de receta, que permite añadir un ingrediente, una instrucción o eliminar la receta:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Introduce el texto de la receta a buscar (-FIN- para volver): lla
+Recetas encontradas:
+1. Tortilla de Patatas
+2. Paella Valenciana
+Elige una receta: 1
+Receta: Tortilla de Patatas
+Ingredientes:
+- Huevos
+- Patatas
+- Aceite
+- Cebolla
+Instrucciones:
+1. Pelar y cortar las patatas.
+2. Freírlas en aceite.
+3. Añadir los huevos batidos.
+4. Cocinar a fuego medio.
+
+1. Añadir ingrediente
+2. Añadir instrucción
+3. Eliminar receta
+4. Volver
+Elige una opción: 1
+Introduce el ingrediente a añadir: Pimienta
+\end{minted}
+\caption{Ejemplo de funcionalidad Consultar/Editar receta}\label{lst:consultar-receta}
+\end{code}
+
+Como se puede observar, el usuario puede seleccionar una receta de la lista de recetas encontradas y, a continuación, puede añadir un ingrediente, una instrucción o eliminar la receta. Una vez realizada la acción solicitada por el usuario, \textbf{el método debe volver al menú principal}. Las acciones de añadir ingrediente y añadir instrucción deben seguir el mismo procedimiento que en la funcionalidad de agregar receta, incluyendo mensajes de error en caso de no poder realizarse (ver~\Cref{lst:error-maximo-receta}).
+
+La funcionalidad de este método está, a su vez, encapsulada en otros métodos auxiliares que se detallan a continuación:
+
+\mintinline[fontsize=\footnotesize]{java}|private Receta buscarRecetaPorNombre(Scanner scanner)|
+
+Método que recibe como parámetro un objeto de la clase \texttt{Scanner} para leer la entrada del usuario y devuelve la receta seleccionada por el usuario. El método debe solicitar al usuario el texto a buscar dentro del nombre de las recetas que desea consultar o editar y mostrar el listado de recetas resultante\sidenote{Si la búsqueda no arroja resultados, hay que solicitar al usuario un nuevo término de búsuqeda.}. A continuación, debe solicitar al usuario que seleccione una de las recetas encontradas y devolver la receta seleccionada. La selección de las recetas también está encapsulada en el método
+
+\mintinline[fontsize=\footnotesize]{java}|private Receta seleccionarReceta(Scanner scanner, Receta[] recetas))|
+
+que recibe como parámetro un objeto de la clase \texttt{Scanner} para leer la entrada del usuario y un array de recetas. El método debe mostrar al usuario el listado de recetas y solicitar al usuario que seleccione una de ellas, mediante el número de orden en el listado (ver~\Cref{lst:consultar-receta}). A continuación, debe devolver la receta seleccionada por el usuario.
+
+Por último, el método
+
+\mintinline[fontsize=\footnotesize]{java}|private void editarReceta(Scanner scanner, Receta seleccionada)|
+
+que recibe como parámetros un objeto de la clase \texttt{Scanner} para leer la entrada del usuario y la receta seleccionada por el usuario. El método debe mostrar la información de la receta seleccionada y el menú de edición de receta, que permite añadir un ingrediente, una instrucción o eliminar la receta (ver~\Cref{lst:consultar-receta}). En el caso de eliminar una receta, se debe mostrar el mensaje \texttt{Receta eliminada.} por pantalla:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Introduce el texto de la receta a buscar (-FIN- para volver): tortilla
+Recetas encontradas:
+1. Tortilla de Patatas
+Elige una receta: 1
+Receta: Tortilla de Patatas
+Ingredientes:
+- Huevos
+- Patatas
+- Aceite
+- Cebolla
+- Pimienta
+Instrucciones:
+1. Pelar y cortar las patatas.
+2. Freírlas en aceite.
+3. Añadir los huevos batidos.
+4. Cocinar a fuego medio.
+
+1. Añadir ingrediente
+2. Añadir instrucción
+3. Eliminar receta
+4. Volver
+Elige una opción: 3
+Receta eliminada.
+\end{minted}
+\caption{Ejemplo de eliminar una receta}\label{lst:eliminar-receta}
+\end{code}
+
+\paragraph{Planificar Comidas}
+
+La funcionalidad que permite planificar las comidas para cada día de la semana se implementa en el método
+
+\mintinline[fontsize=\footnotesize]{java}|private void planificarComidas(Scanner scanner)|
+
+que recibe como parámetro un objeto de la clase \texttt{Scanner} para leer la entrada del usuario. El método debe, en primer lugar, imprimir pon pantalla la planificación actual de la semana. Después, debe solicitar al usuario el día de la semana en el que desea planificar la comida y la receta que desea añadir. Una vez introducidos los datos, el método debe planificar la comida para el día especificado y mostrar un mensaje de éxito:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Planificación de comidas para la semana:
+-----------------------------------------------------------------------------
+ Lunes      Martes     Miércoles  Jueves     Viernes    Sábado     Domingo   
+-----------------------------------------------------------------------------
+                                                                             
+-----------------------------------------------------------------------------
+
+
+Introduce el día de la semana (L, M, X, J, V, S, D): M
+Introduce el texto de la receta a buscar (-FIN- para volver): tor
+Recetas encontradas:
+1. Tortilla de Patatas
+Elige una receta: 1
+Receta planificada para Martes
+\end{minted}
+\caption{Ejemplo de funcionalidad Planificar comidas}\label{lst:planificar-comidas}
+\end{code}
+
+Para pedir al usuario el día de la semana en el que desea planificar la comida, se debe utilizar el componente \texttt{Utilidades} (ver~\cref{sec:utilidades}). En cualquier caso, el método debe volver al menú principal una vez finalizada la acción.
+
+\paragraph{Guardar Recetas}
+
+La funcionalidad que permite guardar las recetas en un archivo de texto se implementa en el método
+
+\mintinline[fontsize=\footnotesize]{java}|private void guardarRecetas(Scanner scanner)|
+
+que recibe como parámetro un objeto de la clase \texttt{Scanner} para leer la entrada del usuario. El método debe solicitar al usuario la ruta del archivo en el que desea guardar las recetas y llamar al método correspondiente del componente que gestiona el libro de recetas (ver~\cref{sec:libro-recetas}). Si las recetas se guardan correctamente, se debe mostrar un mensaje\sidenote{En caso de error, el mensaje a mostrar será: \textit{Error al guardar el archivo.}} de éxito:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Introduce el nombre del archivo donde guardar las recetas: asdfaa.txt
+Recetas guardadas en asdfaa.txt
+\end{minted}
+\caption{Ejemplo de funcionalidad Guardar recetas}\label{lst:guardar-recetas}
+\end{code}
+
+En cualquier caso, el método debe volver al menú principal una vez finalizada la acción.
+
+\paragraph{Cargar Recetas}
+
+La funcionalidad que permite cargar las recetas desde un archivo de texto se implementa en el método
+
+\mintinline[fontsize=\footnotesize]{java}|private void cargarRecetas(Scanner scanner)|
+
+que recibe como parámetro un objeto de la clase \texttt{Scanner} para leer la entrada del usuario. El método debe solicitar al usuario la ruta del archivo del que desea cargar las recetas y llamar al método correspondiente del componente que gestiona el libro de recetas (ver~\cref{sec:libro-recetas}). Si las recetas se cargan correctamente, se debe mostrar un mensaje\sidenote{En caso de error, el mensaje a mostrar será: \textit{Error al cargar el archivo.}} de éxito:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Introduce la ruta del archivo de donde cargar las recetas: aaaa.txt
+Recetas cargadas desde aaaa.txt
+\end{minted}
+\caption{Ejemplo de funcionalidad Cargar recetas}\label{lst:cargar-recetas}
+\end{code}
+
+En cualquier caso, el método debe volver al menú principal una vez finalizada la acción.
+
+\paragraph{Guardar Plan Semanal}
+
+La funcionalidad que permite guardar el plan semanal en un archivo de texto se implementa en el método
+
+\mintinline[fontsize=\footnotesize]{java}|private void guardarPlanSemanal(Scanner scanner)|
+
+que recibe como parámetro un objeto de la clase \texttt{Scanner} para leer la entrada del usuario. El método debe solicitar al usuario la ruta del archivo en el que desea guardar el plan semanal y llamar al método correspondiente del componente que gestiona el planificador semanal (ver~\cref{sec:planificador-semanal}). Si el plan se guarda correctamente, se debe mostrar un mensaje\sidenote{En caso de error, el mensaje a mostrar será: \textit{Error al guardar el archivo.}} de éxito:
+
+\begin{code}
+\begin{minted}
+[
+frame=lines,
+framesep=1mm,
+baselinestretch=1.2,
+fontsize=\footnotesize,
+linenos
+]
+{text}
+Introduce el nombre del archivo donde guardar el plan semanal: plan1.txt
+Plan semanal guardado en plan1.txt
+\end{minted}
+\caption{Ejemplo de funcionalidad Guardar plan semanal}\label{lst:guardar-plan-semanal}
+\end{code}
+
+En cualquier caso, el método debe volver al menú principal una vez finalizada la acción.
+
+\subsection{La función principal Main}\label{sec:main}
+
+La función principal \texttt{Main} es la encargada de inicializar los componentes de la aplicación y de gestionar la ejecución del programa. También se encarga de recibir los argumentos de la línea de comandos que configuran el funcionamiento de la aplicación. En concreto, la función principal debe recibir los siguientes argumentos:
+
+\begin{table*}
+    \caption{Argumentos de la línea de comandos (y su orden)}\label{tab:parametros-main}
+    \begin{tabular}{C{0.03\linewidth} L{0.4\linewidth} L{0.5\linewidth}}
+        \toprule
+        \textbf{\#} & \textbf{Parámetro} & \textbf{Descripción}\\
+        \midrule
+        1 & \texttt{maxIngredientesPorReceta} & Número máximo de ingredientes que puede contener una receta.\\
+        2 & \texttt{maxInstruccionesPorReceta} & Número máximo de instrucciones que puede contener una receta.\\
+        3 & \texttt{maxRecetasEnLibro} & Número máximo de recetas que puede contener el libro de recetas.\\
+        4 & \texttt{nombreArchivoRecetas} & \textit{(Opcional)} Nombre del archivo de texto donde se guardarán las recetas.\\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
+\paragraph{Importancia de los argumentos en la línea de comandos}
+
+Los argumentos proporcionados mediante la línea de comandos permiten a los programas recibir configuraciones o datos de entrada directamente al momento de su ejecución, sin necesidad de modificar el código fuente o interactuar manualmente con el usuario tras iniciarlo. Esto tiene varias ventajas clave:
+
+\begin{enumerate}
+    \item \textbf{Flexibilidad y reutilización:}  
+    Usar argumentos en la línea de comandos hace que los programas sean más versátiles, ya que pueden adaptarse fácilmente a diferentes escenarios sin necesidad de cambios en el código. Por ejemplo, un programa que gestione recetas puede aceptar el nombre de una receta como argumento para buscarla automáticamente al iniciar.
+
+    \item \textbf{Automatización:}  
+    Los argumentos facilitan la integración de programas en scripts o procesos automatizados. Al permitir que los datos se pasen directamente al programa, se elimina la necesidad de interacción manual, lo cual es ideal para entornos de producción o tareas repetitivas.
+
+    \item \textbf{Cumplimiento de buenas prácticas:}  
+    Siguiendo estándares comunes, como los de herramientas Unix, el uso de argumentos fomenta una interfaz coherente y predecible para los usuarios, lo cual es especialmente importante en software diseñado para otros desarrolladores.
+
+    \item \textbf{Simulación de escenarios reales:}  
+    Enseñar a usar argumentos en programas educativos permite a los estudiantes familiarizarse con prácticas comunes en la industria, donde los sistemas suelen depender de configuraciones y parámetros proporcionados al momento de la ejecución.
+
+    \item \textbf{Claridad y separación de responsabilidades:}  
+    Pasar argumentos en la línea de comandos promueve la separación entre la lógica de la aplicación y su configuración. Esto facilita el desarrollo, el mantenimiento y las pruebas, ya que los valores específicos pueden cambiarse sin necesidad de alterar el código fuente.
+\end{enumerate}
+
+Fíjate que el argumento \texttt{nombreArchivoRecetas} es opcional, lo que significa que el programa puede ejecutarse sin proporcionar este argumento. En caso de que se proporcione, el programa debe cargar las recetas desde el archivo especificado al inicio. Si no se proporciona, el programa debe comenzar sin recetas cargadas.
+
+La función principal debe inicializar los componentes de la aplicación y ejecutar el bucle principal del programa, que se define en el método \texttt{menuPrincipal} de la interfaz de usuario (ver~\cref{sec:interfaz-usuario}). La función principal debe gestionar las excepciones que puedan surgir durante la ejecución del programa y mostrar un mensaje de error en caso de que ocurra una excepción no controlada.
+
+\subsection{Casos de prueba}\label{sec:casos-prueba}
+
+Para que puedas comprobar que tu implementación es correcta, se proporcionan una serie de casos de prueba que puedes utilizar para verificar el funcionamiento de tu programa. Además, introduce la metodología de desarrollo dirigido por pruebas\fullsidecite{Astels} (\textit{Test-Driven Development, TDD}) para implementar cada funcionalidad de forma incremental y asegurarte de que cada parte de tu programa funciona correctamente antes de pasar a la siguiente. Aunque implementar y diseñar los casos de prueba queda fuera del alcance de esta asignatura, es importante que conozcas su utilidad y cómo se utilizan. En este caso, los casos de prueba se especifican usando código Java en ficheros que contienen una serie de comandos y mensajes esperados que se pueden utilizar para verificar el correcto funcionamiento de tu programa.
+
+\newpage
+\begin{twothirdswidth}
+\section{Criterios de evaluación}\label{sec:criterios-evaluacion}
+Para llevar a cabo la evaluación de la práctica se tendrán en cuenta varios aspectos complementarios que se detallan a continuación.
+\subsection{Casos de prueba}\label{sec:criterios-casos-prueba}
+Se proporcionan una serie de casos de prueba que se utilizarán para comprobar el correcto funcionamiento de tu programa. Estos casos de prueba se han diseñado para cubrir diferentes situaciones y comprobar que tu implementación es correcta. Es importante que tu programa pase todos los casos de prueba para asegurar que cumple con los requisitos y funcionalidades solicitadas.
+
+\faExclamation~\textbf{Importante} Durante la evaluación, se utilizarán casos de prueba adicionales que no se proporcionan en el enunciado. Estos casos de prueba adicionales se utilizarán para comprobar que tu implementación es correcta y cumple con los requisitos solicitados. El hecho de que tu programa pase los casos de prueba es condición necesaria, pero no suficiente, para obtener una calificación alta. Además de pasar los casos de prueba, tu implementación se evaluará con el resto de criterios detallados en esta sección.
+\subsection{Diseño y estructura del código}\label{sec:criterios-diseno}
+Se valorará la claridad, organización y estructura del código fuente de tu programa. Es importante que tu implementación sea fácil de leer, comprender y mantener. Se valorará positivamente la correcta nomenclatura de variables y métodos, la división en métodos y clases coherentes y la reutilización de código. Se valorará el uso de buenas prácticas de programación y el cumplimiento de los principios de diseño y desarrollo de software. Es importante que tu implementación siga las recomendaciones y buenas prácticas de programación en Java, así como que siga los principios de diseño y desarrollo de software.
+
+\faExclamation~\textbf{Importante} Se valorará negativamente:
+\begin{itemize}
+	\item Código duplicado o redundante.
+	\item Métodos o clases demasiado largos o complejos.
+	\item Falta de modularidad y reutilización de código.
+	\item Uso incorrecto de estructuras de control: bucles y condicionales.
+% Los dos siguientes son en los que hay diferencias de opinión (y yo opino que están mal :) )
+%\item Romper la ejecución de un bucle con \texttt{break} o \texttt{return} en lugar de usar una condición.
+%\item Uso de más de un \texttt{return} en un método.
+	\item Mal uso de excepciones.
+\end{itemize}
+\subsection{Documentación y comentarios}\label{sec:criterios-documentacion}
+Se valorará la calidad de la documentación y los comentarios en el código fuente de tu programa. Es importante que tu implementación esté correctamente documentada y que los comentarios sean claros y concisos. Se valorará positivamente la presencia de comentarios que expliquen el propósito de las clases y métodos, así como el significado de variables y parámetros. Al igual que en el diseño y estructura del código, se valorará negativamente la falta de comentarios y documentación, así como la presencia de comentarios innecesarios o confusos.
+\subsection{Errores graves}\label{sec:criterios-errores}
+A continuación, se detallan una serie de errores graves que, de estar presentes en tu implementación, \textbf{supondrán un suspenso} en la calificación final de la práctica. Es importante que tengas en cuenta estos errores y los evites en tu implementación:
+\begin{itemize}
+	\item No compilar: tu programa no compila correctamente y no se puede ejecutar.
+	\item Argumentos incorrectos: tu programa no recibe los argumentos de la línea de comandos correctamente.
+	\item Plagio: tu implementación contiene código copiado de otras fuentes.
+	\item Código malicioso: tu implementación contiene código malicioso o perjudicial.
+\end{itemize}
+\end{twothirdswidth}
+
+%----------------------------------------------------------------------------------------
+
+\newpage
+
+\addcontentsline{toc}{section}{Referencias} % Add the bibliography to the table of contents
+
+\begin{twothirdswidth} % Content in this environment to be at two-thirds of the whole page width
+	\printbibliography[title=Referencias] % Output the bibliography with a custom section title
+\end{twothirdswidth}
+
+\end{document}
