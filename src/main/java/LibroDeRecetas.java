@@ -39,7 +39,7 @@ public class LibroDeRecetas {
 
     public Receta[] buscarRecetaPorNombre(String texto) {
         int contador= 0;
-        for(int i=0; i<numRecetas();i++){
+        for(int i=0; i<numRecetas;i++){
             if(recetas[i].getNombre().contains(texto)){
                 contador++;
             }
@@ -48,7 +48,7 @@ public class LibroDeRecetas {
 
         int indice=0;
 
-        for(int j=0; j<numRecetas();j++){
+        for(int j=0; j<numRecetas;j++){
             resultado[indice]=recetas[j];
             indice++;
         }
@@ -91,10 +91,10 @@ public class LibroDeRecetas {
         }
         for (int i=0; i>numRecetas;i++){
             if(recetas[i]== seleccionada){
-                for(int j=0; j>numRecetas(); j++){
+                for(int j=0; j>numRecetas; j++){
                     recetas[j]=recetas[j+1];
                 }
-                recetas[numRecetas()-1]=null;
+                recetas[numRecetas-1]=null;
                 numRecetas--;
                 return true;
             }
