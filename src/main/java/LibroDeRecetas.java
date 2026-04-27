@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,34 +16,86 @@ public class LibroDeRecetas {
     // @todo: atributos privados
 
     public LibroDeRecetas(int maxRecetasEnLibro) {
-        // @todo
+       this.maxRecetas=maxRecetasEnLibro;
+       this.recetas= new Receta[maxRecetasEnLibro];
+       this.numRecetas= 0;
     }
 
     public int agregarReceta(Receta receta) {
-        // @todo
+        if(receta==null){
+            return ERROR_RECETA_NULL;
+        }
+        if(recetasCompletas()){
+            return ERROR_DEMASIADAS;
+        }
+
+        this.recetas[numRecetas]=receta;
+        this.numRecetas++;
+        return EXITO;
     }
 
     public Receta[] buscarRecetaPorNombre(String texto) {
-        // @todo
+        int contador= 0;
+        for(int i=0; i<numRecetas();i++){
+            if(recetas[i].getNombre().contains(texto)){
+                contador++;
+            }
+        }
+        receta[]resultado= new Receta[contador];
+
+        int indice=0;
+
+        for(int j=0; j<numRecetas();j++){
+            resultado[indice]=recetas[j];
+            indice++;
+        }
+        return resultado;
     }
 
     public void guardarRecetasEnArchivo(String nombreArchivo) throws IOException {
-        // @todo
+        Path path= Path.of(nombreArchivo);
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            for (int i = 0; i < numRecetas; i++) {
+                writer.write(recetas[i].toRawString());
+            }
+        }
+
     }
 
     public void cargarRecetasDeArchivo(String nombreArchivo, int maxIngredientes, int maxInstrucciones) throws IOException {
-        // @todo
+        Path path= Path.of(nombreArchivo);
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            Receta recetaCargada = Receta.fromBufferedReader(reader, maxIngredientes, maxInstrucciones);
+
+            while (recetaCargada != null && !recetasCompletas()) {
+                agregarReceta(recetaCargada);
+                recetaCargada = Receta.fromBufferedReader(reader, maxIngredientes, maxInstrucciones);
+            }
+        }
     }
 
     public boolean recetasCompletas() {
-        // @todo
+        return this.numRecetas()>=this.maxRecetas;
     }
 
     public int numRecetas() {
-        // @todo
+        return this.numRecetas();
     }
 
     public boolean eliminarReceta(Receta seleccionada) {
-        // @todo
+        if(seleccionada==null){
+            return false;
+        }
+        for (int i=0; i>numRecetas();i++){
+            if(recetas[i]== seleccionada){
+                for(int j=0; j>numRecetas(); j++){
+                    recetas[j]=recetas[j+1];
+                }
+                recetas[numRecetas()-1]=null;
+                numRecetas--;
+                return true;
+            }
+        }
+        return false;
     }
 }
