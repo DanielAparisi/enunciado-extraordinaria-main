@@ -14,6 +14,9 @@ public class LibroDeRecetas {
     public static final int ERROR_DEMASIADAS = 2;
 
     // @todo: atributos privados
+    private int maxRecetas;
+    private int numRecetas;
+    private Receta[]recetas;
 
     public LibroDeRecetas(int maxRecetasEnLibro) {
        this.maxRecetas=maxRecetasEnLibro;
@@ -22,14 +25,14 @@ public class LibroDeRecetas {
     }
 
     public int agregarReceta(Receta receta) {
-        if(receta==null){
+        if (receta == null) {
             return ERROR_RECETA_NULL;
         }
-        if(recetasCompletas()){
+        if (recetasCompletas()) {
             return ERROR_DEMASIADAS;
         }
 
-        this.recetas[numRecetas]=receta;
+        this.recetas[numRecetas] = receta;
         this.numRecetas++;
         return EXITO;
     }
@@ -41,7 +44,7 @@ public class LibroDeRecetas {
                 contador++;
             }
         }
-        receta[]resultado= new Receta[contador];
+        Receta[]resultado= new Receta[contador];
 
         int indice=0;
 
@@ -75,18 +78,18 @@ public class LibroDeRecetas {
     }
 
     public boolean recetasCompletas() {
-        return this.numRecetas()>=this.maxRecetas;
+        return this.numRecetas>=this.maxRecetas;
     }
 
     public int numRecetas() {
-        return this.numRecetas();
+        return this.numRecetas;
     }
 
     public boolean eliminarReceta(Receta seleccionada) {
         if(seleccionada==null){
             return false;
         }
-        for (int i=0; i>numRecetas();i++){
+        for (int i=0; i>numRecetas;i++){
             if(recetas[i]== seleccionada){
                 for(int j=0; j>numRecetas(); j++){
                     recetas[j]=recetas[j+1];
