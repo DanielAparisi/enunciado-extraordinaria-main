@@ -22,19 +22,23 @@ public class PlanificadorSemanal {
     // número de caracteres mostrados antes del punto cuando truncamos
     public static final int MAX_RECETA_NOMBRE = ANCHO_COLUMNA - 2;
 
+
     // @todo: atributos privados
 
+
     public PlanificadorSemanal() {
-        // @todo
+
     }
 
     public void agregarComida(int dia, Receta receta) {
         // @todo
+
     }
 
     @Override
     public String toString() {
         // @todo
+        return "hola";
     }
 
     public void guardarPlanEnArchivo(String nombreArchivo) throws IOException {

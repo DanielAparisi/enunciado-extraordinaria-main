@@ -91,7 +91,7 @@ public class LibroDeRecetas {
         }
         for (int i=0; i>numRecetas;i++){
             if(recetas[i]== seleccionada){
-                for(int j=0; j>numRecetas; j++){
+                for(int j=i; j>numRecetas; j++){
                     recetas[j]=recetas[j+1];
                 }
                 recetas[numRecetas-1]=null;

@@ -5,8 +5,11 @@ import java.util.Scanner;
  */
 public class Utilidades {
     public static String leerCadena(Scanner teclado, String s) {
-        System.out.print(s);
-        String cadena = teclado.nextLine();
+        String cadena;
+        do {
+            System.out.print(s);
+            cadena = teclado.nextLine();
+        } while (cadena.isEmpty());
         return cadena;
     }
 
@@ -27,54 +30,33 @@ public class Utilidades {
 
 
     public static int leerDiaDeLaSemana(Scanner teclado, String mensaje) {
-        // @todo
-        String dia;
         int posicion;
         do {
             System.out.print(mensaje);
-            dia = teclado.nextLine().toUpperCase();
-            switch (dia) {
-                case "L" -> posicion = 0;
-                case "M" -> posicion = 1;
-                case "X" -> posicion = 2;
-                case "J" -> posicion = 3;
-                case "V" -> posicion = 4;
-                case "S" -> posicion = 5;
-                case "D" -> posicion = 6;
-                default -> posicion = -1;
-            }
+            String dia = teclado.nextLine().toUpperCase();
+            posicion = diaSemanaAPosicion(dia);
         } while (posicion == -1);
         return posicion;
     }
 
     public static int diaSemanaAPosicion(String dia) {
-        int posicion;
-        String dia1 = dia.substring(0, 1).toUpperCase();//Extraemos Su inicial en Mayuscula
-        switch (dia1) {
-            case "L" -> posicion = 0;
-            case "M" -> posicion = 1;
-            case "X" -> posicion = 2;
-            case "J" -> posicion = 3;
-            case "V" -> posicion = 4;
-            case "S" -> posicion = 5;
-            case "D" -> posicion = 6;
-            default -> posicion = -1;
+        if (dia == null || dia.isEmpty()) return -1;
+        switch (dia.substring(0, 1).toUpperCase()) {
+            case "L": return PlanificadorSemanal.LUNES;
+            case "M": return PlanificadorSemanal.MARTES;
+            case "X": return PlanificadorSemanal.MIERCOLES;
+            case "J": return PlanificadorSemanal.JUEVES;
+            case "V": return PlanificadorSemanal.VIERNES;
+            case "S": return PlanificadorSemanal.SABADO;
+            case "D": return PlanificadorSemanal.DOMINGO;
+            default:  return -1;
         }
-        return posicion;
     }
 
     public static String posicionADiaSemana(int pos) {
-        // @todo
-        String dia = "Desconocido";
-        switch (pos) {
-            case 0 -> dia = "Lunes";
-            case 1 -> dia = "Martes";
-            case 2 -> dia = "Miércoles";
-            case 3 -> dia = "Jueves";
-            case 4 -> dia = "Viernes";
-            case 5 -> dia = "Sábado";
-            case 6 -> dia = "Domingo";
+        if (pos >= PlanificadorSemanal.LUNES && pos <= PlanificadorSemanal.DOMINGO) {
+            return PlanificadorSemanal.NOMBRES_DIAS[pos];
         }
-        return dia; //si no se ha encontrado ----> desconocido
+        return "Desconocido";
     }
 }

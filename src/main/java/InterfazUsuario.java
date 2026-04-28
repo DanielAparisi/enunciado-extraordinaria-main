@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class InterfazUsuario {
-    // @todo: atributos privados
+    // @todo: atributos privado
 
     public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
         // @todo
@@ -28,17 +28,18 @@ public class InterfazUsuario {
         // @todo
     }
 
-    private Receta buscarRecetaPorNombre(Scanner scanner) {
+    //private Receta buscarRecetaPorNombre(Scanner scanner) {
         // @todo
-    }
+
+    //}
 
     private void editarReceta(Scanner scanner, Receta seleccionada) {
         // @todo
     }
 
-    private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
+    //private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
         // @todo
-    }
+    //}
 
     private void planificarComidas(Scanner scanner) {
         // @todo
