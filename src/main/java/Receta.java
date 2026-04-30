@@ -10,7 +10,7 @@ public class Receta {
     public static final int ERROR_INSTRUCCIONES_COMPLETAS = 3;
 
     public static final String SEPARADOR_INSTRUCCIONES = "INSTRUCCIONES";
-    public static final String SEPARADOR_FIN = "-----";
+    public static final String SEPARADOR_FIN = "----";
 
     // @todo: atributos privados
 
@@ -48,7 +48,7 @@ public class Receta {
 
     public String[] getInstrucciones() {
         String [ ] copiaInstrucciones= new String[numInstrucciones];
-        for ( int i = 0; i<maxInstrucciones; i++){
+        for ( int i = 0; i<numInstrucciones; i++){
             copiaInstrucciones[i]= instrucciones[i];
         }
         return copiaInstrucciones;
@@ -80,22 +80,12 @@ public class Receta {
     }
 
     public boolean ingredientesCompletos() {
-        if(numIngredientes()>=maxIngredientes){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return numIngredientes() >= maxIngredientes;
 
     }
 
     public boolean instruccionesCompletas() {
-        if(numInstrucciones()>=maxInstrucciones){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return numInstrucciones() >= maxInstrucciones;
     }
 
     public int numIngredientes() {
@@ -127,11 +117,11 @@ public class Receta {
         for(int i=0; i<numIngredientes;i++){
             sb.append(ingredientes[i]).append("\n");
         }
-        sb.append("INSTRUCCIONES: ").append("\n");
+        sb.append("INSTRUCCIONES").append("\n");
         for(int j=0; j<numInstrucciones;j++){
             sb.append(instrucciones[j]).append("\n");
         }
-        sb.append("----").append("\n");
+        sb.append("-----").append("\n");
         return sb.toString();
     }
 
@@ -158,7 +148,7 @@ public class Receta {
         }
 
         linea= reader.readLine();
-        while(linea!= null && !linea.equals("----")){
+        while(linea!= null && !linea.equals("-----")){
             nuevaReceta.agregarInstruccion(linea);
             linea= reader.readLine();
         }

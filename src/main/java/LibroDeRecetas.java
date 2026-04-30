@@ -3,9 +3,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LibroDeRecetas {
 
@@ -40,7 +37,7 @@ public class LibroDeRecetas {
     public Receta[] buscarRecetaPorNombre(String texto) {
         int contador= 0;
         for(int i=0; i<numRecetas;i++){
-            if(recetas[i].getNombre().contains(texto)){
+            if(recetas[i].getNombre().toLowerCase().contains(texto.toLowerCase())){  //usamos el toLowercase par ignorar mayuscula y minusculas
                 contador++;
             }
         }
@@ -49,8 +46,10 @@ public class LibroDeRecetas {
         int indice=0;
 
         for(int j=0; j<numRecetas;j++){
-            resultado[indice]=recetas[j];
-            indice++;
+            if(recetas[j].getNombre().toLowerCase().contains(texto.toLowerCase())){
+                resultado[indice]=recetas[j];
+                indice++;
+            }
         }
         return resultado;
     }
@@ -89,9 +88,9 @@ public class LibroDeRecetas {
         if(seleccionada==null){
             return false;
         }
-        for (int i=0; i>numRecetas;i++){
+        for (int i=0; i<numRecetas;i++){
             if(recetas[i]== seleccionada){
-                for(int j=i; j>numRecetas; j++){
+                for(int j=i; j<numRecetas; j++){
                     recetas[j]=recetas[j+1];
                 }
                 recetas[numRecetas-1]=null;
