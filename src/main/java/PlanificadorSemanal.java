@@ -1,4 +1,6 @@
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -24,24 +26,45 @@ public class PlanificadorSemanal {
 
 
     // @todo: atributos privados
+    private Receta [] planSemanal;
 
 
     public PlanificadorSemanal() {
-
+        this.planSemanal= new Receta[NOMBRES_DIAS.length];
     }
 
     public void agregarComida(int dia, Receta receta) {
-        // @todo
-
+        if(dia>=LUNES && dia<=DOMINGO){
+            this.planSemanal[dia]= receta;
+        }
     }
 
     @Override
     public String toString() {
-        // @todo
-        return "hola";
+        StringBuilder sb= new StringBuilder();
+        sb.append("------------------------------------------------------------------------------------");
+        sb.append("\n");
+        for(int i= 0; i<=NOMBRES_DIAS.length;i++){
+         sb.append(NOMBRES_DIAS[i]+"\t");
+        }
+        sb.append("\n");
+        sb.append("------------------------------------------------------------------------------------");
+        sb.append("\n");
+        for(int i=0; i<=planSemanal.length;i++ ){
+            if(planSemanal!=null && planSemanal[i]!=null){
+                sb.append(planSemanal[i]+"\t");
+            }
+            else{
+                sb.append(" \t");
+            }
+        }
+        sb.append("\n");
+        sb.append("------------------------------------------------------------------------------------");
+
+        return sb.toString();
     }
 
     public void guardarPlanEnArchivo(String nombreArchivo) throws IOException {
-        // @todo
+
     }
 }
