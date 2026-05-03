@@ -100,11 +100,11 @@ public class Receta {
     public String toString() {
         StringBuilder sb= new StringBuilder();
         sb.append("Receta: ").append(this.nombre).append("\n");
-        sb.append("Ingredientes: ").append("\n");
+        sb.append("Ingredientes:").append("\n");
         for(int i=0; i<numIngredientes;i++){
             sb.append("- ").append(ingredientes[i]).append("\n");
         }
-        sb.append("Instrucciones: ").append("\n");
+        sb.append("Instrucciones:").append("\n");
         for(int j=0; j<numInstrucciones;j++){
             sb.append(j+1+". ").append(instrucciones[j]).append("\n");
         }

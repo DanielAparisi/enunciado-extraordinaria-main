@@ -4,12 +4,12 @@ import java.util.Scanner;
 public class InterfazUsuario {
     // @todo: atributos privado
         private LibroDeRecetas libroRecetas;
-        private final int maxIngredientes;
-        private final int maxInstrucciones;
+        private int maxIngredientes;
+        private int maxInstrucciones;
 
 
 
-    public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
+         public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
             // @todo
             this.maxIngredientes = maxIngredientes;
             this.maxInstrucciones = maxInstrucciones;
@@ -27,7 +27,7 @@ public class InterfazUsuario {
 
         }
 
-        private void menuPrincipal(Scanner scanner) {
+         private void menuPrincipal(Scanner scanner) {
                 String cadena = "";
                 cadena += "--- Menú Principal ---\n";
                 cadena += "1. Agregar Receta\n";
@@ -54,7 +54,7 @@ public class InterfazUsuario {
                     }
                 } while (opcion != 7);
                 System.out.println("¡Has salido del recetario con éxito!");
-            }
+         }
 
 
         private void agregarReceta(Scanner scanner) {
@@ -91,7 +91,6 @@ public class InterfazUsuario {
         }
 
         private Receta buscarRecetaPorNombre(Scanner scanner) {
-            // @todo
             return null;
         }
 
@@ -99,12 +98,12 @@ public class InterfazUsuario {
             // @todo
         }
 
-        //private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
-            // @todo
-        //}
+        private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
+             return null;
+        }
 
         private void planificarComidas(Scanner scanner) {
-            // @todo
+
         }
 
         private void guardarRecetas(Scanner scanner) {

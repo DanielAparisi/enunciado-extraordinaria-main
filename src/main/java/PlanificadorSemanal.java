@@ -41,30 +41,49 @@ public class PlanificadorSemanal {
 
     @Override
     public String toString() {
-        StringBuilder sb= new StringBuilder();
-        sb.append("------------------------------------------------------------------------------------");
-        sb.append("\n");
-        for(int i= 0; i<=NOMBRES_DIAS.length;i++){
-         sb.append(NOMBRES_DIAS[i]+"\t");
+        StringBuilder sb = new StringBuilder();
+        sb.append("------------------------------------------------------------------------------------\n");
+        for(int i = 0; i < NOMBRES_DIAS.length; i++) {
+            sb.append(formatearCelda(NOMBRES_DIAS[i]));
         }
-        sb.append("\n");
-        sb.append("------------------------------------------------------------------------------------");
-        sb.append("\n");
-        for(int i=0; i<=planSemanal.length;i++ ){
-            if(planSemanal!=null && planSemanal[i]!=null){
-                sb.append(planSemanal[i]+"\t");
-            }
-            else{
-                sb.append(" \t");
-            }
-        }
-        sb.append("\n");
-        sb.append("------------------------------------------------------------------------------------");
 
+        sb.append("\n");
+        sb.append("------------------------------------------------------------------------------------\n");
+        for(int i = 0; i < planSemanal.length; i++) {
+            if (planSemanal[i] != null && planSemanal[i].getNombre() != null) {
+                sb.append(formatearCelda(planSemanal[i].getNombre()));
+            } else {
+                sb.append(formatearCelda(""));
+            }
+        }
+
+        sb.append("\n");
+        sb.append("------------------------------------------------------------------------------------\n");
         return sb.toString();
     }
 
-    public void guardarPlanEnArchivo(String nombreArchivo) throws IOException {
+    private String formatearCelda( String texto){
+        if (texto.length() > 11) {
+            String textoTruncado = texto.substring(0, MAX_RECETA_NOMBRE) + ".";
+            return String.format("%-" + ANCHO_COLUMNA + "s", textoTruncado);
+        } else {
+            return String.format("%-" + ANCHO_COLUMNA + "s", texto);
+        }
+    }
 
+    public void guardarPlanEnArchivo(String nombreArchivo) throws IOException {
+        Path path = Path.of(nombreArchivo);
+
+        try( BufferedWriter bufferedWriter= Files.newBufferedWriter(path)){
+            for ( int i=0; i<NOMBRES_DIAS.length; i++){
+                String nombreDia = NOMBRES_DIAS[i];
+                String textoReceta = "---";
+                if (planSemanal[i] != null && planSemanal[i].getNombre() != null) {
+                    textoReceta = planSemanal[i].getNombre();
+                }
+                bufferedWriter.write(nombreDia + ": " + textoReceta);
+                bufferedWriter.newLine();
+            }
+        }
     }
 }
