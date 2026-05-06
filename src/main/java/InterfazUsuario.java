@@ -131,7 +131,7 @@ public class InterfazUsuario {
             if(seleccionada !=null){
                 System.out.println(seleccionada.toString());
             }
-            String[] recetas;
+          
             System.out.println();
           
             String cadena = "";
