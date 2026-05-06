@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 public class InterfazUsuario {
@@ -9,7 +8,7 @@ public class InterfazUsuario {
 
 
 
-         public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
+    public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
             // @todo
             this.maxIngredientes = maxIngredientes;
             this.maxInstrucciones = maxInstrucciones;
@@ -87,17 +86,78 @@ public class InterfazUsuario {
         }
 
         private void consultarReceta(Scanner scanner) {
-            // @todo
+            Receta busqueda = buscarRecetaPorNombre(scanner);
+            if(!busqueda.getNombre().equalsIgnoreCase("ELIMINAR")){
+                System.out.println(busqueda);
+                System.out.println();
+                editarReceta(scanner, busqueda);
+            }
+
         }
 
         private Receta buscarRecetaPorNombre(Scanner scanner) {
+            String textoBusqueda = Utilidades.leerCadena(scanner,"Introduce el texto de la receta a buscar (-FIN- para volver):" );
+            Receta recetaEncontrada;
+            boolean fin = false;
+            while (textoBusqueda.equalsIgnoreCase("fin") || textoBusqueda.equalsIgnoreCase("-FIN-")){
+                Receta[] recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
+                //verificamos si el array esta vacio
+                while (recetasEncontradas[0] == null && !textoBusqueda.equalsIgnoreCase("fin") && !textoBusqueda.equalsIgnoreCase("-FIN-")){
+                    System.out.println("No se han encontrado recetas con ese nombre. Prueba otra vez.");
+                    textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
+                    recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
+                }
+
+                //si no esta vacio mostramos las recetas
+              if (!textoBusqueda.equalsIgnoreCase("fin") && !textoBusqueda.equalsIgnoreCase("-FIN-")){
+
+                  System.out.println("Recetas encontradas");
+                  recetaEncontrada = seleccionarReceta(scanner, recetasEncontradas);
+              } else{
+                  recetaEncontrada = new Receta("ELIMINAR", maxIngredientes, maxInstrucciones);
+              }
+            }
             return null;
         }
 
         private void editarReceta(Scanner scanner, Receta seleccionada) {
-            // @todo
-        }
+            /*
+            recibe como parámetros un objeto de la clase Scanner pa-
+            ra leer la entrada del usuario y la receta seleccionada por el
+            usuario. El método debe mostrar la información de la rece-
+            ta seleccionada y el menú de edición de receta, que permi-
+            te añadir un ingrediente, una instrucción o eliminar la receta
+            */
+            if(seleccionada !=null){
+                System.out.println(seleccionada.toString());
+            }
+            String[] recetas;
+            System.out.println();
+          
+            String cadena = "";
+                cadena += "1. Añadir ingrediente\n";
+                cadena += "2. Añadir instrucción\n";
+                cadena += "3. Eliminar receta\n";
+                cadena += "4. Volver\n";
 
+            int opcion;
+            do{
+                System.out.println();
+                opcion = Utilidades.leerNumero(scanner, cadena, 1, 4);
+                String nuevoIngrediente = Utilidades.leerCadena(scanner, "Introduce el ingrediente a añadir:");
+                String nuevaInstruccion = Utilidades.leerCadena(scanner, "Introduce la Instruccion  a añadir:");
+
+                switch (opcion) {
+                    case 1 -> seleccionada.agregarIngrediente(nuevoIngrediente);
+                    case 2 -> seleccionada.agregarInstruccion(nuevaInstruccion);
+                    case 3 -> libroRecetas.eliminarReceta(seleccionada);
+    
+                }
+            } while (opcion != 4);
+
+           
+
+        }        
         private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
              return null;
         }
