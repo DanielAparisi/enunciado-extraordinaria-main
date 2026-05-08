@@ -159,6 +159,25 @@ public class InterfazUsuario {
 
         }        
         private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
+            /*que recibe como parámetro un objeto de la clase Scanner pa-
+            ra leer la entrada del usuario y un array de recetas. El méto-
+            do debe mostrar al usuario el listado de recetas y solicitar al
+            usuario que seleccione una de ellas, mediante el número de
+            orden en el listado (ver Listado 12). A continuación, debe de-
+            volver la receta seleccionada por el usuario. */
+            int index = -1;
+            int totalRecetas = 1;
+            if(recetas.length == 0){
+                return null;
+            }
+
+            for(int i = 0; i< recetas.length; i++){
+                //si recetas[i] == null ---> estamos en el tope;
+                if(recetas[i + 1] == null){
+                    totalRecetas += 1;
+                }
+
+            }
              return null;
         }
 
