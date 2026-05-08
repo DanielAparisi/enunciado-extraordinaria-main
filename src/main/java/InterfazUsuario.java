@@ -5,6 +5,7 @@ public class InterfazUsuario {
         private LibroDeRecetas libroRecetas;
         private int maxIngredientes;
         private int maxInstrucciones;
+        private PlanificadorSemanal planificaccionSemanal;
 
 
 
@@ -17,6 +18,10 @@ public class InterfazUsuario {
 
         public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro, String archivoRecetas) {
             // @todo
+            this.maxIngredientes = maxIngredientes;
+            this.maxInstrucciones = maxInstrucciones;
+            this.libroRecetas = new LibroDeRecetas(maxRecetasEnLibro);
+            
         }
 
         public void iniciar() {
@@ -191,13 +196,57 @@ public class InterfazUsuario {
         private void planificarComidas(Scanner scanner) {
             /*recibe como parámetro un objeto de la clase Scanner para
             leer la entrada del usuario. El método debe, en primer lugar,
-            imprimir pon pantalla la planificación actual de la semana.
+            imprimir por pantalla la planificación actual de la semana.
             Después, debe solicitar al usuario el día de la semana en el
             que desea planificar la comida y la receta que desea añadir.
             Una vez introducidos los datos, el método debe planificar la
             comida para el día especificado y mostrar un mensaje de éxi-
             to */
-            
+            String planificaccion = planificaccionSemanal.toString();
+
+            System.out.println("Planificación de comidas para la semana:");
+            System.out.println(planificaccion);
+            System.out.println("");
+           
+           String diaRequerido = "";
+            boolean esValido = false; //estado
+            Receta receta;
+
+            do { 
+                // Leemos la entrada y usamos .toUpperCase() por si el usuario la escribe en minúscula
+                diaRequerido = Utilidades.leerCadena(scanner, "Introduce el día de la semana (L, M, X, J, V, S, D)").toUpperCase();
+                int ValorDiaRequerido;
+                // Comprobamos si la entrada coincide con una sola letra válida usando una expresión regular
+                if (diaRequerido.matches("[LMXJVSD]")) {
+                    esValido = true; // La entrada es correcta, cambiamos a true para salir del bucle
+                    //cojo el diaRequerido y depues lo comparo con la primera letra delas constante de libroderecetas y si coincidan devueove ese valor  
+                    if(diaRequerido == "L"){
+                        ValorDiaRequerido = planificaccionSemanal.LUNES;
+                    }else if(diaRequerido == "M"){
+                        ValorDiaRequerido = planificaccionSemanal.MARTES;
+                    }else if(diaRequerido == "X"){
+                        ValorDiaRequerido = planificaccionSemanal.MIERCOLES;
+                    }else if(diaRequerido == "J"){
+                        ValorDiaRequerido = planificaccionSemanal.JUEVES;
+                    }else if(diaRequerido == "V"){
+                        ValorDiaRequerido = planificaccionSemanal.VIERNES;
+                    }else if(diaRequerido == "S"){
+                        ValorDiaRequerido = planificaccionSemanal.SABADO;
+                    }else {
+                        ValorDiaRequerido = planificaccionSemanal.DOMINGO;
+                    }
+                    receta = buscarRecetaPorNombre(scanner);
+                    if(receta != null){
+                        planificaccionSemanal.agregarComida(ValorDiaRequerido, receta);
+                        System.out.println("Receta Planificada para el" + diaRequerido);
+                    }
+                } else {
+                    // La entrada es incorrecta, mostramos el mensaje de error
+                    System.out.println("Error: Letra no válida. Debes introducir exclusivamente: L, M, X, J, V, S o D.");
+                }
+                
+            } while (!esValido); // El bucle se repetirá mientras esValido sea falso
+
         }
 
         private void guardarRecetas(Scanner scanner) {
