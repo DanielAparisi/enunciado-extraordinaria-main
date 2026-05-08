@@ -165,24 +165,39 @@ public class InterfazUsuario {
             usuario que seleccione una de ellas, mediante el número de
             orden en el listado (ver Listado 12). A continuación, debe de-
             volver la receta seleccionada por el usuario. */
-            int index = -1;
+            
             int totalRecetas = 1;
             if(recetas.length == 0){
                 return null;
-            }
+            }else{
 
-            for(int i = 0; i< recetas.length; i++){
-                //si recetas[i] == null ---> estamos en el tope;
-                if(recetas[i + 1] == null){
-                    totalRecetas += 1;
+                for(int i = 0; i< recetas.length; i++){
+                    //MOSTRAMOS EL NOMBRE CON EL INDICE
+                    if (recetas[i] != null) {
+                        System.out.println((i + 1) + ". " + recetas[i].getNombre());//emepzamos el indice por el 1 no por el 0, 
+                    }
+
+                    if(i == recetas.length -1){
+                        totalRecetas = recetas.length;
+                    }else{
+                        //si no ¿como consigo el numero totalderecetas si no ha llegado al maximo del array??
+                    }
                 }
-
             }
-             return null;
+            int recetaAelegir = Utilidades.leerNumero(scanner, "Elige una receta: ", 1, totalRecetas);
+
+            return recetas[recetaAelegir];
         }
-
         private void planificarComidas(Scanner scanner) {
-
+            /*recibe como parámetro un objeto de la clase Scanner para
+            leer la entrada del usuario. El método debe, en primer lugar,
+            imprimir pon pantalla la planificación actual de la semana.
+            Después, debe solicitar al usuario el día de la semana en el
+            que desea planificar la comida y la receta que desea añadir.
+            Una vez introducidos los datos, el método debe planificar la
+            comida para el día especificado y mostrar un mensaje de éxi-
+            to */
+            
         }
 
         private void guardarRecetas(Scanner scanner) {
