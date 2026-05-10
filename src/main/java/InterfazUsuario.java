@@ -14,6 +14,7 @@ public class InterfazUsuario {
             this.maxIngredientes = maxIngredientes;
             this.maxInstrucciones = maxInstrucciones;
             this.libroRecetas = new LibroDeRecetas(maxRecetasEnLibro);
+            this.planificaccionSemanal = new PlanificadorSemanal();
         }
 
         public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro, String archivoRecetas) {
@@ -21,6 +22,7 @@ public class InterfazUsuario {
             this.maxIngredientes = maxIngredientes;
             this.maxInstrucciones = maxInstrucciones;
             this.libroRecetas = new LibroDeRecetas(maxRecetasEnLibro);
+
             
         }
 
@@ -60,34 +62,48 @@ public class InterfazUsuario {
                 System.out.println("¡Has salido del recetario con éxito!");
          }
 
-
         private void agregarReceta(Scanner scanner) {
-            // @todo
-            /* El método debe solicitar al usua-
-            rio el nombre de la receta. A continuación, debe solicitar al
-            usuario que introduzca los ingredientes e instrucciones de la
-            receta. Una vez introducidos los datos, el método debe crear
-            un objeto de la clase Receta con la información proporciona-
-            da y añadir la receta al libro de recetas. Si la receta se añade
-            correctamente, se debe mostrar un mensaje de éxito */
+
+            if (!libroRecetas.recetasCompletas()) {
+
+                boolean fin = false; //variable de estado
+                String nombre;
+                nombre = Utilidades.leerCadena(scanner, "Nombre de la receta: ");
+                Receta receta = new Receta(nombre, maxIngredientes, maxInstrucciones);
 
 
+                String ingrediente;
+                ingrediente = Utilidades.leerCadena(scanner, "Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar): ");
+                while (!ingrediente.equalsIgnoreCase("fin") && !fin) {
+                    receta.agregarIngrediente(ingrediente);
+                    if (!receta.ingredientesCompletos()) {
+                        ingrediente = Utilidades.leerCadena(scanner, "Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar): ");
+                    } else {
+                        System.out.println("Ha añadido el número máximo de ingredientes posible.");
+                        fin = true;
+                    }
+                }
 
-            if(!libroRecetas.recetasCompletas()){
 
-            String nombre;
-            nombre = Utilidades.leerCadena(scanner,"nombre de la cadena ");
-            //aqui crea el una receta nueva con ese nombre
-            Receta receta = new Receta(nombre, maxIngredientes, maxInstrucciones);
+                fin = false; 
+                String instruccion;
+                instruccion = Utilidades.leerCadena(scanner, "Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar): ");
+                while (!instruccion.equalsIgnoreCase("fin") && !fin) {
 
-            String ingrediente ;
-            ingrediente = Utilidades.leerCadena(scanner,"Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar");
+                    receta.agregarInstruccion(instruccion);
+
+                    if (!receta.instruccionesCompletas()) {
+                        instruccion = Utilidades.leerCadena(scanner, "Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar): ");
+                    } else {
+                        System.out.println("Ha añadido el número máximo de instrucciones posible.");
+                        fin = true;
+                    }
+                }
+                libroRecetas.agregarReceta(receta);
+                System.out.println("¡Receta agregada exitosamente!");
 
 
-            }else{
-                System.out.println("No se pudo añadir la receta");
-            }
-
+            } else System.out.println("No se pudo añadir la receta.");
         }
 
         private void consultarReceta(Scanner scanner) {
@@ -97,7 +113,6 @@ public class InterfazUsuario {
                 System.out.println();
                 editarReceta(scanner, busqueda);
             }
-
         }
 
         private Receta buscarRecetaPorNombre(Scanner scanner) {
@@ -116,10 +131,10 @@ public class InterfazUsuario {
                 //si no esta vacio mostramos las recetas
               if (!textoBusqueda.equalsIgnoreCase("fin") && !textoBusqueda.equalsIgnoreCase("-FIN-")){
 
-                  System.out.println("Recetas encontradas");
-                  recetaEncontrada = seleccionarReceta(scanner, recetasEncontradas);
+                System.out.println("Recetas encontradas");
+                recetaEncontrada = seleccionarReceta(scanner, recetasEncontradas);
               } else{
-                  recetaEncontrada = new Receta("ELIMINAR", maxIngredientes, maxInstrucciones);
+                recetaEncontrada = new Receta("ELIMINAR", maxIngredientes, maxInstrucciones);
               }
             }
             return null;
@@ -159,9 +174,6 @@ public class InterfazUsuario {
     
                 }
             } while (opcion != 4);
-
-           
-
         }        
         private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
             /*que recibe como parámetro un objeto de la clase Scanner pa-
@@ -193,6 +205,7 @@ public class InterfazUsuario {
 
             return recetas[recetaAelegir];
         }
+        @SuppressWarnings("ConvertToStringSwitch")
         private void planificarComidas(Scanner scanner) {
             /*recibe como parámetro un objeto de la clase Scanner para
             leer la entrada del usuario. El método debe, en primer lugar,
