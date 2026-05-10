@@ -101,6 +101,7 @@ public class InterfazUsuario {
 
         private void consultarReceta(Scanner scanner) {
             Receta busqueda = buscarRecetaPorNombre(scanner);
+            //aqui sale que receta es null
             if(!busqueda.getNombre().equalsIgnoreCase("ELIMINAR")){
                 System.out.println(busqueda);
                 System.out.println();
@@ -108,30 +109,36 @@ public class InterfazUsuario {
             }
         }
 
-        private Receta buscarRecetaPorNombre(Scanner scanner) {
-            String textoBusqueda = Utilidades.leerCadena(scanner,"Introduce el texto de la receta a buscar (-FIN- para volver):" );
-            Receta recetaEncontrada;
-            boolean fin = false;
-            while (textoBusqueda.equalsIgnoreCase("fin") || textoBusqueda.equalsIgnoreCase("-FIN-")){
-                Receta[] recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
-                //verificamos si el array esta vacio
-                while (recetasEncontradas[0] == null && !textoBusqueda.equalsIgnoreCase("fin") && !textoBusqueda.equalsIgnoreCase("-FIN-")){
-                    System.out.println("No se han encontrado recetas con ese nombre. Prueba otra vez.");
-                    textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
-                    recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
-                }
+    private Receta buscarRecetaPorNombre(Scanner scanner) {
+        String textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
 
-                //si no esta vacio mostramos las recetas
-              if (!textoBusqueda.equalsIgnoreCase("fin") && !textoBusqueda.equalsIgnoreCase("-FIN-")){
+        // Bucle infinito: solo saldremos de él cuando hagamos un "return"
+        while (true) {
 
-                System.out.println("Recetas encontradas");
-                recetaEncontrada = seleccionarReceta(scanner, recetasEncontradas);
-              } else{
-                recetaEncontrada = new Receta("ELIMINAR", maxIngredientes, maxInstrucciones);
-              }
+            // 1. Comprobamos si el usuario quiere salir
+            if (textoBusqueda.equalsIgnoreCase("fin") || textoBusqueda.equalsIgnoreCase("-FIN-")) {
+                // Devolvemos la receta "falsa" para indicar que queremos salir
+                return new Receta("ELIMINAR", maxIngredientes, maxInstrucciones);
             }
-            return null;
+
+            // 2. Si no ha escrito "fin", buscamos la receta
+            Receta[] recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
+
+            // 3. Comprobamos si el array tiene algo
+            if (recetasEncontradas[0] != null) {
+                // ¡La encontramos!
+                System.out.println("Recetas encontradas");
+                // La seleccionamos y SALIMOS del método devolviéndola
+                return seleccionarReceta(scanner, recetasEncontradas);
+
+            } else {
+                // No se encontró. Mostramos error y VOLVEMOS a pedir la palabra
+                // Como no hay ningún 'return' aquí, el bucle volverá a empezar arriba
+                System.out.println("No se han encontrado recetas con ese nombre. Prueba otra vez.");
+                textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
+            }
         }
+    }
 
         private void editarReceta(Scanner scanner, Receta seleccionada) {
             /*
@@ -181,10 +188,10 @@ public class InterfazUsuario {
                 return null;
             }else{
 
-                for(int i = 0; i< recetas.length; i++){
+                for(int i = 1; i< recetas.length; i++){
                     //MOSTRAMOS EL NOMBRE CON EL INDICE
                     if (recetas[i] != null) {
-                        System.out.println((i + 1) + ". " + recetas[i].getNombre());//emepzamos el indice por el 1 no por el 0, 
+                        System.out.println((i) + ". " + recetas[i].getNombre());//emepzamos el indice por el 1 no por el 0,
                     }
 
                     if(i == recetas.length -1){
