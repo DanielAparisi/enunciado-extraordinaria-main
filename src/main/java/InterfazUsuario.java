@@ -25,6 +25,9 @@ public class InterfazUsuario {
 
             
         }
+        private boolean esCancelacion(String texto) {
+            return texto.equalsIgnoreCase("fin") || texto.equalsIgnoreCase("-FIN-");
+        }
 
         public void iniciar() {
             Scanner scanner = new Scanner(System.in);
@@ -34,33 +37,33 @@ public class InterfazUsuario {
         }
 
         private void menuPrincipal(Scanner scanner) {
-                String cadena = "";
-                cadena += "--- Menú Principal ---\n";
-                cadena += "1. Agregar Receta\n";
-                cadena += "2. Consultar/Editar Receta\n";
-                cadena += "3. Planificar Comidas\n";
-                cadena += "4. Guardar Recetas\n";
-                cadena += "5. Cargar Recetas\n";
-                cadena += "6. Guardar Plan Semanal\n";
-                cadena += "7. Salir\n\n";
+            String cadena = "";
+            cadena += "--- Menú Principal ---\n";
+            cadena += "1. Agregar Receta\n";
+            cadena += "2. Consultar/Editar Receta\n";
+            cadena += "3. Planificar Comidas\n";
+            cadena += "4. Guardar Recetas\n";
+            cadena += "5. Cargar Recetas\n";
+            cadena += "6. Guardar Plan Semanal\n";
+            cadena += "7. Salir\n\n";
 
-                cadena += "Elige una opción: ";
+            cadena += "Elige una opción: ";
 
-                int opcion;
-                do{
-                    System.out.println();
-                    opcion = Utilidades.leerNumero(scanner, cadena, 1, 7);
-                    switch (opcion) {
-                        case 1 -> agregarReceta(scanner);
-                        case 2 -> consultarReceta(scanner);
-                        case 3 -> planificarComidas(scanner);
-                        case 4 -> guardarRecetas(scanner);
-                        case 5 -> cargarRecetas(scanner);
-                        case 6 -> guardarPlanSemanal(scanner);
-                    }
-                } while (opcion != 7);
-                System.out.println("¡Has salido del recetario con éxito!");
-         }
+            int opcion;
+            do{
+                System.out.println();
+                opcion = Utilidades.leerNumero(scanner, cadena, 1, 7);
+                switch (opcion) {
+                    case 1 -> agregarReceta(scanner);
+                    case 2 -> consultarReceta(scanner);
+                    case 3 -> planificarComidas(scanner);
+                    case 4 -> guardarRecetas(scanner);
+                    case 5 -> cargarRecetas(scanner);
+                    case 6 -> guardarPlanSemanal(scanner);
+                }
+            } while (opcion != 7);
+            System.out.println("¡Has salido del recetario con éxito!");
+        }
 
         private void agregarReceta(Scanner scanner) {
             boolean fin = false;
@@ -68,7 +71,7 @@ public class InterfazUsuario {
             Receta receta = new Receta(nombre, maxIngredientes, maxInstrucciones);
 
             String ingrediente = Utilidades.leerCadena(scanner, "Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar): ");
-            while (!ingrediente.equalsIgnoreCase("fin") && !fin) {
+            while (!esCancelacion(ingrediente) && !fin) {
                 receta.agregarIngrediente(ingrediente);
                 if (!receta.ingredientesCompletos()) {
                     ingrediente = Utilidades.leerCadena(scanner, "Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar): ");
@@ -80,7 +83,7 @@ public class InterfazUsuario {
 
             fin = false;
             String instruccion = Utilidades.leerCadena(scanner, "Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar): ");
-            while (!instruccion.equalsIgnoreCase("fin") && !fin) {
+            while (!esCancelacion(instruccion) && !fin) {
                 receta.agregarInstruccion(instruccion);
                 if (!receta.instruccionesCompletas()) {
                     instruccion = Utilidades.leerCadena(scanner, "Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar): ");
@@ -98,47 +101,41 @@ public class InterfazUsuario {
             }
         }
 
-
         private void consultarReceta(Scanner scanner) {
             Receta busqueda = buscarRecetaPorNombre(scanner);
-            //aqui sale que receta es null
-            if(!busqueda.getNombre().equalsIgnoreCase("ELIMINAR")){
+            
+            if(!busqueda.getNombre().equalsIgnoreCase("ELIMINAR")){  //aqui sale que receta es null ----> 
                 System.out.println(busqueda);
                 System.out.println();
                 editarReceta(scanner, busqueda);
             }
         }
 
-    private Receta buscarRecetaPorNombre(Scanner scanner) {
-        String textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
 
-        // Bucle infinito: solo saldremos de él cuando hagamos un "return"
-        while (true) {
 
-            // 1. Comprobamos si el usuario quiere salir
-            if (textoBusqueda.equalsIgnoreCase("fin") || textoBusqueda.equalsIgnoreCase("-FIN-")) {
-                // Devolvemos la receta "falsa" para indicar que queremos salir
-                return new Receta("ELIMINAR", maxIngredientes, maxInstrucciones);
-            }
+        private Receta buscarRecetaPorNombre(Scanner scanner) {
+            String textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
+            Receta respuesta;
 
-            // 2. Si no ha escrito "fin", buscamos la receta
-            Receta[] recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
-
-            // 3. Comprobamos si el array tiene algo
-            if (recetasEncontradas[0] != null) {
-                // ¡La encontramos!
-                System.out.println("Recetas encontradas");
-                // La seleccionamos y SALIMOS del método devolviéndola
-                return seleccionarReceta(scanner, recetasEncontradas);
-
+            if (esCancelacion(textoBusqueda)) {
+                respuesta = new Receta("ELIMINARRR", maxIngredientes, maxInstrucciones);
             } else {
-                // No se encontró. Mostramos error y VOLVEMOS a pedir la palabra
-                // Como no hay ningún 'return' aquí, el bucle volverá a empezar arriba
-                System.out.println("No se han encontrado recetas con ese nombre. Prueba otra vez.");
-                textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
+                Receta[] recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
+
+                while (recetasEncontradas[0] == null && !esCancelacion(textoBusqueda)) {
+                    System.out.println("No se han encontrado recetas con ese nombre. Prueba otra vez.");
+                    textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
+                    recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
+                }
+
+                if (!esCancelacion(textoBusqueda)) {
+                    System.out.println("Recetas encontradas:");
+                    respuesta = seleccionarReceta(scanner, recetasEncontradas);
+                } else respuesta = new Receta("ELIMINARRR", maxIngredientes, maxInstrucciones);
             }
+
+            return respuesta;
         }
-    }
 
         private void editarReceta(Scanner scanner, Receta seleccionada) {
             /*
@@ -174,37 +171,40 @@ public class InterfazUsuario {
     
                 }
             } while (opcion != 4);
-        }        
-        private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
-            /*que recibe como parámetro un objeto de la clase Scanner pa-
-            ra leer la entrada del usuario y un array de recetas. El méto-
-            do debe mostrar al usuario el listado de recetas y solicitar al
-            usuario que seleccione una de ellas, mediante el número de
-            orden en el listado (ver Listado 12). A continuación, debe de-
-            volver la receta seleccionada por el usuario. */
-            
-            int totalRecetas = 1;
-            if(recetas.length == 0){
-                return null;
-            }else{
-
-                for(int i = 1; i< recetas.length; i++){
-                    //MOSTRAMOS EL NOMBRE CON EL INDICE
-                    if (recetas[i] != null) {
-                        System.out.println((i) + ". " + recetas[i].getNombre());//emepzamos el indice por el 1 no por el 0,
-                    }
-
-                    if(i == recetas.length -1){
-                        totalRecetas = recetas.length;
-                    }else{
-                        //si no ¿como consigo el numero totalderecetas si no ha llegado al maximo del array??
-                    }
-                }
-            }
-            int recetaAelegir = Utilidades.leerNumero(scanner, "Elige una receta: ", 1, totalRecetas);
-
-            return recetas[recetaAelegir];
         }
+        
+    private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
+        // 1. Validación de seguridad (incluyendo que el array no sea null)
+        if (recetas == null || recetas.length == 0) {
+            return null;
+        }
+
+        int totalRecetas = 0; // Esta variable será nuestro contador real
+
+        // 2. Empezamos en i = 0, porque el primer elemento siempre es el 0
+        for (int i = 0; i < recetas.length; i++) {
+            if (recetas[i] != null) {
+                // Contamos que hemos encontrado una receta real
+                totalRecetas++;
+
+                // Mostramos el índice empezando por 1 visualmente para el usuario (i + 1)
+                System.out.println((i + 1) + ". " + recetas[i].getNombre());
+            }
+        }
+
+        // Si resulta que el array tenía longitud pero todos eran 'null'
+        if (totalRecetas == 0) {
+            System.out.println("No hay recetas disponibles.");
+            return null;
+        }
+
+        // Si tus recetas se guardan siempre seguidas, puedes usar 'totalRecetas'.
+        int recetaAelegir = Utilidades.leerNumero(scanner, "Elige una receta: ", 1, recetas.length);
+
+
+        // Como el usuario elige del 1 en adelante, debemos restarle 1 para que encaje con el índice del array (0 en adelante)
+        return recetas[recetaAelegir - 1];
+    }
         @SuppressWarnings("ConvertToStringSwitch")
         private void planificarComidas(Scanner scanner) {
             /*recibe como parámetro un objeto de la clase Scanner para
