@@ -9,7 +9,7 @@ public class InterfazUsuario {
 
 
 
-    public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
+        public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
             // @todo
             this.maxIngredientes = maxIngredientes;
             this.maxInstrucciones = maxInstrucciones;
@@ -103,8 +103,8 @@ public class InterfazUsuario {
 
         private void consultarReceta(Scanner scanner) {
             Receta busqueda = buscarRecetaPorNombre(scanner);
-            
-            if(!busqueda.getNombre().equalsIgnoreCase("ELIMINAR")){  //aqui sale que receta es null ----> 
+
+            if (busqueda != null) {
                 System.out.println(busqueda);
                 System.out.println();
                 editarReceta(scanner, busqueda);
@@ -118,7 +118,7 @@ public class InterfazUsuario {
             Receta respuesta;
 
             if (esCancelacion(textoBusqueda)) {
-                respuesta = new Receta("ELIMINARRR", maxIngredientes, maxInstrucciones);
+                respuesta = null;
             } else {
                 Receta[] recetasEncontradas = libroRecetas.buscarRecetaPorNombre(textoBusqueda);
 
@@ -131,7 +131,7 @@ public class InterfazUsuario {
                 if (!esCancelacion(textoBusqueda)) {
                     System.out.println("Recetas encontradas:");
                     respuesta = seleccionarReceta(scanner, recetasEncontradas);
-                } else respuesta = new Receta("ELIMINARRR", maxIngredientes, maxInstrucciones);
+                } else respuesta = null;
             }
 
             return respuesta;
@@ -145,32 +145,34 @@ public class InterfazUsuario {
             ta seleccionada y el menú de edición de receta, que permi-
             te añadir un ingrediente, una instrucción o eliminar la receta
             */
-            if(seleccionada !=null){
-                System.out.println(seleccionada.toString());
-            }
-          
-            System.out.println();
-          
-            String cadena = "";
-                cadena += "1. Añadir ingrediente\n";
-                cadena += "2. Añadir instrucción\n";
-                cadena += "3. Eliminar receta\n";
-                cadena += "4. Volver\n";
-
-            int opcion;
-            do{
+            if(seleccionada != null){
+                System.out.println(seleccionada);
                 System.out.println();
-                opcion = Utilidades.leerNumero(scanner, cadena, 1, 4);
-                String nuevoIngrediente = Utilidades.leerCadena(scanner, "Introduce el ingrediente a añadir:");
-                String nuevaInstruccion = Utilidades.leerCadena(scanner, "Introduce la Instruccion  a añadir:");
+            
+                String cadena = "";
+                    cadena += "1. Añadir ingrediente\n";
+                    cadena += "2. Añadir instrucción\n";
+                    cadena += "3. Eliminar receta\n";
+                    cadena += "4. Volver\n";
 
+                System.out.println();
+                int opcion = Utilidades.leerNumero(scanner, cadena, 1, 4);
                 switch (opcion) {
-                    case 1 -> seleccionada.agregarIngrediente(nuevoIngrediente);
-                    case 2 -> seleccionada.agregarInstruccion(nuevaInstruccion);
-                    case 3 -> libroRecetas.eliminarReceta(seleccionada);
-    
+                    case 1 -> {
+                        String nuevoIngrediente = Utilidades.leerCadena(scanner, "Introduce el ingrediente a añadir: ");
+                        seleccionada.agregarIngrediente(nuevoIngrediente);
+                    }
+                    case 2 -> {
+                        String nuevaInstruccion = Utilidades.leerCadena(scanner, "Introduce la instrucción a añadir: ");
+                        seleccionada.agregarInstruccion(nuevaInstruccion);
+                    }
+                    case 3 -> {
+                        libroRecetas.eliminarReceta(seleccionada);
+                        System.out.println("Receta eliminada.");
+                    }
+                    case 4 -> System.out.println("Volver");
                 }
-            } while (opcion != 4);
+            }   
         }
         
     private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
@@ -233,17 +235,17 @@ public class InterfazUsuario {
                 if (diaRequerido.matches("[LMXJVSD]")) {
                     esValido = true; // La entrada es correcta, cambiamos a true para salir del bucle
                     //cojo el diaRequerido y depues lo comparo con la primera letra delas constante de libroderecetas y si coincidan devueove ese valor  
-                    if(diaRequerido == "L"){
+                    if("L".equals(diaRequerido)){
                         ValorDiaRequerido = planificaccionSemanal.LUNES;
-                    }else if(diaRequerido == "M"){
+                    }else if("M".equals(diaRequerido)){
                         ValorDiaRequerido = planificaccionSemanal.MARTES;
-                    }else if(diaRequerido == "X"){
+                    }else if("X".equals(diaRequerido)){
                         ValorDiaRequerido = planificaccionSemanal.MIERCOLES;
-                    }else if(diaRequerido == "J"){
+                    }else if("J".equals(diaRequerido)){
                         ValorDiaRequerido = planificaccionSemanal.JUEVES;
-                    }else if(diaRequerido == "V"){
+                    }else if("V".equals(diaRequerido)){
                         ValorDiaRequerido = planificaccionSemanal.VIERNES;
-                    }else if(diaRequerido == "S"){
+                    }else if("S".equals(diaRequerido)){
                         ValorDiaRequerido = planificaccionSemanal.SABADO;
                     }else {
                         ValorDiaRequerido = planificaccionSemanal.DOMINGO;
