@@ -33,7 +33,7 @@ public class InterfazUsuario {
 
         }
 
-         private void menuPrincipal(Scanner scanner) {
+        private void menuPrincipal(Scanner scanner) {
                 String cadena = "";
                 cadena += "--- Menú Principal ---\n";
                 cadena += "1. Agregar Receta\n";
@@ -63,48 +63,41 @@ public class InterfazUsuario {
          }
 
         private void agregarReceta(Scanner scanner) {
+            boolean fin = false;
+            String nombre = Utilidades.leerCadena(scanner, "Nombre de la receta: ");
+            Receta receta = new Receta(nombre, maxIngredientes, maxInstrucciones);
+
+            String ingrediente = Utilidades.leerCadena(scanner, "Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar): ");
+            while (!ingrediente.equalsIgnoreCase("fin") && !fin) {
+                receta.agregarIngrediente(ingrediente);
+                if (!receta.ingredientesCompletos()) {
+                    ingrediente = Utilidades.leerCadena(scanner, "Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar): ");
+                } else {
+                    System.out.println("No se pueden añadir más ingredientes.");
+                    fin = true;
+                }
+            }
+
+            fin = false;
+            String instruccion = Utilidades.leerCadena(scanner, "Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar): ");
+            while (!instruccion.equalsIgnoreCase("fin") && !fin) {
+                receta.agregarInstruccion(instruccion);
+                if (!receta.instruccionesCompletas()) {
+                    instruccion = Utilidades.leerCadena(scanner, "Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar): ");
+                } else {
+                    System.out.println("Ha añadido el número máximo de instrucciones posible.");
+                    fin = true;
+                }
+            }
 
             if (!libroRecetas.recetasCompletas()) {
-
-                boolean fin = false; //variable de estado
-                String nombre;
-                nombre = Utilidades.leerCadena(scanner, "Nombre de la receta: ");
-                Receta receta = new Receta(nombre, maxIngredientes, maxInstrucciones);
-
-
-                String ingrediente;
-                ingrediente = Utilidades.leerCadena(scanner, "Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar): ");
-                while (!ingrediente.equalsIgnoreCase("fin") && !fin) {
-                    receta.agregarIngrediente(ingrediente);
-                    if (!receta.ingredientesCompletos()) {
-                        ingrediente = Utilidades.leerCadena(scanner, "Introduce los ingredientes (una línea por ingrediente, escribe 'fin' para terminar): ");
-                    } else {
-                        System.out.println("Ha añadido el número máximo de ingredientes posible.");
-                        fin = true;
-                    }
-                }
-
-
-                fin = false; 
-                String instruccion;
-                instruccion = Utilidades.leerCadena(scanner, "Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar): ");
-                while (!instruccion.equalsIgnoreCase("fin") && !fin) {
-
-                    receta.agregarInstruccion(instruccion);
-
-                    if (!receta.instruccionesCompletas()) {
-                        instruccion = Utilidades.leerCadena(scanner, "Introduce las instrucciones (una línea por instrucción, escribe 'fin' para terminar): ");
-                    } else {
-                        System.out.println("Ha añadido el número máximo de instrucciones posible.");
-                        fin = true;
-                    }
-                }
                 libroRecetas.agregarReceta(receta);
                 System.out.println("¡Receta agregada exitosamente!");
-
-
-            } else System.out.println("No se pudo añadir la receta.");
+            } else {
+                System.out.println("No se pudo añadir la receta.");
+            }
         }
+
 
         private void consultarReceta(Scanner scanner) {
             Receta busqueda = buscarRecetaPorNombre(scanner);
@@ -264,6 +257,7 @@ public class InterfazUsuario {
 
         private void guardarRecetas(Scanner scanner) {
             // @todo
+
         }
 
         private void cargarRecetas(Scanner scanner) {
