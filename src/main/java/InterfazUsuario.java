@@ -5,16 +5,14 @@ public class InterfazUsuario {
         private LibroDeRecetas libroRecetas;
         private int maxIngredientes;
         private int maxInstrucciones;
-        private PlanificadorSemanal planificaccionSemanal;
-
-
+        private PlanificadorSemanal planificador;
 
         public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
             // @todo
             this.maxIngredientes = maxIngredientes;
             this.maxInstrucciones = maxInstrucciones;
             this.libroRecetas = new LibroDeRecetas(maxRecetasEnLibro);
-            this.planificaccionSemanal = new PlanificadorSemanal();
+            this.planificador = new PlanificadorSemanal();
         }
 
         public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro, String archivoRecetas) {
@@ -200,84 +198,50 @@ public class InterfazUsuario {
             return null;
         }
 
-        // Si tus recetas se guardan siempre seguidas, puedes usar 'totalRecetas'.
+        
         int recetaAelegir = Utilidades.leerNumero(scanner, "Elige una receta: ", 1, recetas.length);
 
 
         // Como el usuario elige del 1 en adelante, debemos restarle 1 para que encaje con el índice del array (0 en adelante)
         return recetas[recetaAelegir - 1];
     }
-        @SuppressWarnings("ConvertToStringSwitch")
-        private void planificarComidas(Scanner scanner) {
-            /*recibe como parámetro un objeto de la clase Scanner para
-            leer la entrada del usuario. El método debe, en primer lugar,
-            imprimir por pantalla la planificación actual de la semana.
-            Después, debe solicitar al usuario el día de la semana en el
-            que desea planificar la comida y la receta que desea añadir.
-            Una vez introducidos los datos, el método debe planificar la
-            comida para el día especificado y mostrar un mensaje de éxi-
-            to */
-            String planificaccion = planificaccionSemanal.toString();
 
-            System.out.println("Planificación de comidas para la semana:");
-            System.out.println(planificaccion);
-            System.out.println("");
-           
-           String diaRequerido = "";
-            boolean esValido = false; //estado
-            Receta receta;
+    private void planificarComidas(Scanner scanner) {
 
-            do { 
-                // Leemos la entrada y usamos .toUpperCase() por si el usuario la escribe en minúscula
-                diaRequerido = Utilidades.leerCadena(scanner, "Introduce el día de la semana (L, M, X, J, V, S, D)").toUpperCase();
-                int ValorDiaRequerido;
-                // Comprobamos si la entrada coincide con una sola letra válida usando una expresión regular
-                if (diaRequerido.matches("[LMXJVSD]")) {
-                    esValido = true; // La entrada es correcta, cambiamos a true para salir del bucle
-                    //cojo el diaRequerido y depues lo comparo con la primera letra delas constante de libroderecetas y si coincidan devueove ese valor  
-                    if("L".equals(diaRequerido)){
-                        ValorDiaRequerido = planificaccionSemanal.LUNES;
-                    }else if("M".equals(diaRequerido)){
-                        ValorDiaRequerido = planificaccionSemanal.MARTES;
-                    }else if("X".equals(diaRequerido)){
-                        ValorDiaRequerido = planificaccionSemanal.MIERCOLES;
-                    }else if("J".equals(diaRequerido)){
-                        ValorDiaRequerido = planificaccionSemanal.JUEVES;
-                    }else if("V".equals(diaRequerido)){
-                        ValorDiaRequerido = planificaccionSemanal.VIERNES;
-                    }else if("S".equals(diaRequerido)){
-                        ValorDiaRequerido = planificaccionSemanal.SABADO;
-                    }else {
-                        ValorDiaRequerido = planificaccionSemanal.DOMINGO;
-                    }
-                    receta = buscarRecetaPorNombre(scanner);
-                    if(receta != null){
-                        planificaccionSemanal.agregarComida(ValorDiaRequerido, receta);
-                        System.out.println("Receta Planificada para el" + diaRequerido);
-                    }
-                } else {
-                    // La entrada es incorrecta, mostramos el mensaje de error
-                    System.out.println("Error: Letra no válida. Debes introducir exclusivamente: L, M, X, J, V, S o D.");
-                }
-                
-            } while (!esValido); // El bucle se repetirá mientras esValido sea falso
+        System.out.println("Planificación de comidas para la semana:");
 
-        }
+        System.out.println(planificador.toString());
+        System.out.println();
 
-        private void guardarRecetas(Scanner scanner) {
-            // @todo
+        int valorDia = Utilidades.leerDiaDeLaSemana(scanner, "Introduce el día de la semana (L, M, X, J, V, S, D): ");
+        String nombreDia = Utilidades.posicionADiaSemana(valorDia);
 
-        }
+        Receta receta = buscarRecetaPorNombre(scanner);
 
-        private void cargarRecetas(Scanner scanner) {
-            // @todo
-        }
+        if (receta != null) {
+            planificador.agregarComida(valorDia, receta);
+            System.out.println("Receta planificada para " + nombreDia + ".");
+        } else {
+            System.out.println("No se pudo planificar porque no se encontró la receta.");
 
-        private void guardarPlanSemanal(Scanner scanner) {
-            // @todo
-        }
-
-        private void mostrarError(String mensaje) {
-            // @todo
         }
     }
+
+
+    private void guardarRecetas(Scanner scanner) {
+        // @todo
+
+    }
+
+    private void cargarRecetas(Scanner scanner) {
+        // @todo
+    }
+
+    private void guardarPlanSemanal(Scanner scanner) {
+        // @todo
+    }
+
+    private void mostrarError(String mensaje) {
+        // @todo
+    }
+}
