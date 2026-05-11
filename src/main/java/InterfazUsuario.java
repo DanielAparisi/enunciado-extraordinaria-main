@@ -252,4 +252,5 @@ public class InterfazUsuario {
     private void mostrarError(String mensaje) {
         // @todo
     }
+    //apa guapo
 }
