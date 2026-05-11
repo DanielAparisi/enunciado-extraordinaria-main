@@ -1,10 +1,9 @@
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@SuppressWarnings("unused")
+
 public class PlanificadorSemanal {
 
     // Constantes para los días de la semana

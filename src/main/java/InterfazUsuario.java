@@ -223,13 +223,21 @@ public class InterfazUsuario {
             System.out.println("Receta planificada para " + nombreDia + ".");
         } else {
             System.out.println("No se pudo planificar porque no se encontró la receta.");
-
         }
     }
 
-
     private void guardarRecetas(Scanner scanner) {
         // @todo
+        /*
+        que recibe como parámetro el nombre del archivo en el que
+        se guardarán las recetas. Hay que usar el método toRawString
+        de la clase Receta para obtener la representación textual de
+        cada receta, y escribir esta información en el archivo de tex-
+        to
+        */
+        String busqueda = Utilidades.leerCadena(scanner, "Introduce el nombre del archivo donde guardar las recetas(.txt):");
+       
+
 
     }
 
