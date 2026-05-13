@@ -72,18 +72,17 @@ public class PlanificadorSemanal {
 
     public void guardarPlanEnArchivo(String nombreArchivo) throws IOException {
         Path path = Path.of(nombreArchivo);
+        StringBuilder sb = new StringBuilder();
 
-        try( BufferedWriter bufferedWriter= Files.newBufferedWriter(path)){
-            for ( int i=0; i<NOMBRES_DIAS.length; i++){
-                String nombreDia = NOMBRES_DIAS[i];
-                String textoReceta = "---";
-                if (planSemanal[i] != null && planSemanal[i].getNombre() != null) {
-                    textoReceta = planSemanal[i].getNombre();
-                }
-                bufferedWriter.write(nombreDia + ": " + textoReceta);
-                bufferedWriter.newLine();
+        for (int i = 0; i < NOMBRES_DIAS.length; i++) {
+            String nombreDia = NOMBRES_DIAS[i];
+            String textoReceta = "---";
+            if (planSemanal[i] != null && planSemanal[i].getNombre() != null) {
+                textoReceta = planSemanal[i].getNombre();
             }
+            sb.append(nombreDia).append(": ").append(textoReceta).append("\n");
         }
+
+        Files.writeString(path, sb.toString());
     }
 }
-/*Hola luis*/
