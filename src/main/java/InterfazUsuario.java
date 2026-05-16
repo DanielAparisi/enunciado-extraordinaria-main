@@ -237,7 +237,7 @@ public class InterfazUsuario {
             System.out.println("Error al guardar el archivo: " + e.getMessage());
         }
     }
-    public void mostrarError(){
-
+    private void mostrarError(String mensaje) {
+        // @todo
     }
 }
