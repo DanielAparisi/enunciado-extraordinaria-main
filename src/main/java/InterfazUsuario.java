@@ -49,11 +49,11 @@ public class InterfazUsuario {
         cadena += "5. Cargar Recetas\n";
         cadena += "6. Guardar Plan Semanal\n";
         cadena += "7. Salir\n\n";
-        cadena += "Elige una opción: ";
+
+        cadena += "Elige una opción:";
 
         int opcion;
-        do {
-            System.out.println();
+        do{
             opcion = Utilidades.leerNumero(scanner, cadena, 1, 7);
             switch (opcion) {
                 case 1 -> agregarReceta(scanner);
@@ -64,7 +64,6 @@ public class InterfazUsuario {
                 case 6 -> guardarPlanSemanal(scanner);
             }
         } while (opcion != 7);
-        System.out.println("¡Has salido del recetario con éxito!");
     }
 
     private void agregarReceta(Scanner scanner) {
