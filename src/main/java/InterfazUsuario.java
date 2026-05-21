@@ -237,6 +237,6 @@ public class InterfazUsuario {
         }
     }
     private void mostrarError(String mensaje) {
-        // @todo
+        System.out.println(mensaje);
     }
 }
