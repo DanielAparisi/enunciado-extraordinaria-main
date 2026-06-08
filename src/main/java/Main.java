@@ -1,4 +1,24 @@
+/**
+ * Punto de entrada de la aplicación de recetario y planificador semanal.
+ * <p>
+ * Recibe los parámetros de configuración por línea de comandos, inicializa
+ * la {@link InterfazUsuario} y arranca el bucle principal del programa.
+ * </p>
+ */
 public class Main {
+
+    /**
+     * Método principal de la aplicación.
+     * <p>Argumentos esperados (en orden):</p>
+     * <ol>
+     *   <li>{@code maxIngredientesPorReceta} – número máximo de ingredientes por receta</li>
+     *   <li>{@code maxInstruccionesPorReceta} – número máximo de instrucciones por receta</li>
+     *   <li>{@code maxRecetasEnLibro} – número máximo de recetas en el libro</li>
+     *   <li>{@code nombreArchivoRecetas} (opcional) – fichero del que cargar recetas al inicio</li>
+     * </ol>
+     *
+     * @param args argumentos de la línea de comandos
+     */
     public static void main(String[] args) {
 
         if (args.length < 3) {

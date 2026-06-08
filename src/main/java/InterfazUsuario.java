@@ -1,6 +1,13 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Gestiona la interacción con el usuario a través de un menú en consola.
+ * <p>
+ * Actúa como controlador principal: muestra el menú, recoge la entrada del
+ * usuario y delega las operaciones en {@link LibroDeRecetas} y {@link PlanificadorSemanal}.
+ * </p>
+ */
 public class InterfazUsuario {
 
     private final LibroDeRecetas libroRecetas;
@@ -8,6 +15,13 @@ public class InterfazUsuario {
     private final int maxInstrucciones;
     private PlanificadorSemanal planificador;
 
+    /**
+     * Crea la interfaz de usuario inicializando el libro de recetas y el planificador vacíos.
+     *
+     * @param maxIngredientes  número máximo de ingredientes por receta
+     * @param maxInstrucciones número máximo de instrucciones por receta
+     * @param maxRecetasEnLibro número máximo de recetas en el libro
+     */
     public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro) {
         this.maxIngredientes = maxIngredientes;
         this.maxInstrucciones = maxInstrucciones;
@@ -15,16 +29,38 @@ public class InterfazUsuario {
         this.planificador = new PlanificadorSemanal();
     }
 
+    /**
+     * Crea la interfaz de usuario indicando el fichero de recetas a cargar al inicio.
+     *
+     * @param maxIngredientes   número máximo de ingredientes por receta
+     * @param maxInstrucciones  número máximo de instrucciones por receta
+     * @param maxRecetasEnLibro número máximo de recetas en el libro
+     * @param archivoRecetas    ruta del fichero de recetas a cargar al iniciar
+     */
     public InterfazUsuario(int maxIngredientes, int maxInstrucciones, int maxRecetasEnLibro, String archivoRecetas) {
         this.maxIngredientes = maxIngredientes;
         this.maxInstrucciones = maxInstrucciones;
         this.libroRecetas = new LibroDeRecetas(maxRecetasEnLibro);
     }
 
+    /**
+     * Comprueba si el texto introducido por el usuario es una señal de cancelación
+     * ({@code "fin"} o {@code "-FIN-"}, sin distinción de mayúsculas).
+     *
+     * @param texto texto a comprobar
+     * @return {@code true} si el texto indica cancelación
+     */
     private boolean esCancelacion(String texto) {
         return texto.equalsIgnoreCase("fin") || texto.equalsIgnoreCase("-FIN-");
     }
 
+    /**
+     * Solicita al usuario el nombre de un fichero y garantiza que termine en {@code .txt}.
+     *
+     * @param scanner lector de entrada estándar
+     * @param mensaje mensaje a mostrar antes de leer
+     * @return nombre del fichero con extensión {@code .txt}
+     */
     private String leerNombreArchivoTxt(Scanner scanner, String mensaje) {
         String nombreArchivo = Utilidades.leerCadena(scanner, mensaje);
         if (!nombreArchivo.toLowerCase().endsWith(".txt")) {
@@ -33,12 +69,22 @@ public class InterfazUsuario {
         return nombreArchivo;
     }
 
+    /**
+     * Abre el canal de entrada y lanza el bucle principal del programa.
+     * El método retorna cuando el usuario selecciona la opción de salir.
+     */
     public void iniciar() {
         Scanner scanner = new Scanner(System.in);
         menuPrincipal(scanner);
         scanner.close();
     }
 
+    /**
+     * Muestra el menú principal y gestiona la selección del usuario en bucle
+     * hasta que se elija la opción de salir.
+     *
+     * @param scanner lector de entrada estándar
+     */
     private void menuPrincipal(Scanner scanner) {
         String cadena = "";
         cadena += "--- Menú Principal ---\n";
@@ -66,6 +112,12 @@ public class InterfazUsuario {
         } while (opcion != 7);
     }
 
+    /**
+     * Solicita al usuario los datos de una nueva receta (nombre, ingredientes e instrucciones)
+     * y la añade al libro de recetas.
+     *
+     * @param scanner lector de entrada estándar
+     */
     private void agregarReceta(Scanner scanner) {
         boolean fin = false;
         String nombre = Utilidades.leerCadena(scanner, "Nombre de la receta: ");
@@ -102,6 +154,12 @@ public class InterfazUsuario {
         }
     }
 
+    /**
+     * Permite al usuario buscar una receta por nombre y, tras seleccionarla,
+     * acceder al menú de edición.
+     *
+     * @param scanner lector de entrada estándar
+     */
     private void consultarReceta(Scanner scanner) {
         Receta busqueda = buscarRecetaPorNombre(scanner);
         if (busqueda != null) {
@@ -111,6 +169,14 @@ public class InterfazUsuario {
         }
     }
 
+    /**
+     * Solicita al usuario un texto de búsqueda y devuelve la receta que seleccione
+     * de entre las coincidencias encontradas. Repite la búsqueda si no hay resultados.
+     * Devuelve {@code null} si el usuario cancela con {@code -FIN-}.
+     *
+     * @param scanner lector de entrada estándar
+     * @return receta seleccionada por el usuario, o {@code null} si cancela
+     */
     private Receta buscarRecetaPorNombre(Scanner scanner) {
         String textoBusqueda = Utilidades.leerCadena(scanner, "Introduce el texto de la receta a buscar (-FIN- para volver): ");
         Receta respuesta;
@@ -137,6 +203,13 @@ public class InterfazUsuario {
         return respuesta;
     }
 
+    /**
+     * Muestra el menú de edición de la receta seleccionada y ejecuta la acción elegida
+     * (añadir ingrediente, añadir instrucción, eliminar receta o volver).
+     *
+     * @param scanner     lector de entrada estándar
+     * @param seleccionada receta sobre la que se realizará la edición
+     */
     private void editarReceta(Scanner scanner, Receta seleccionada) {
         if (seleccionada != null) {
             System.out.println(seleccionada);
@@ -168,6 +241,13 @@ public class InterfazUsuario {
         }
     }
 
+    /**
+     * Muestra el listado de recetas proporcionado y devuelve la que elija el usuario.
+     *
+     * @param scanner lector de entrada estándar
+     * @param recetas array de recetas entre las que el usuario debe elegir
+     * @return receta seleccionada, o {@code null} si el array es vacío o nulo
+     */
     private Receta seleccionarReceta(Scanner scanner, Receta[] recetas) {
         if (recetas == null || recetas.length == 0) {
             return null;
@@ -190,6 +270,11 @@ public class InterfazUsuario {
         return recetas[recetaAElegir - 1];
     }
 
+    /**
+     * Muestra el plan semanal actual y permite al usuario asignar una receta a un día concreto.
+     *
+     * @param scanner lector de entrada estándar
+     */
     private void planificarComidas(Scanner scanner) {
         System.out.println("Planificación de comidas para la semana:");
         System.out.println(planificador.toString());
@@ -207,6 +292,11 @@ public class InterfazUsuario {
         }
     }
 
+    /**
+     * Solicita al usuario el nombre del fichero y guarda en él todas las recetas del libro.
+     *
+     * @param scanner lector de entrada estándar
+     */
     private void guardarRecetas(Scanner scanner) {
         String nombreArchivo = leerNombreArchivoTxt(scanner, "Introduce el nombre del archivo donde guardar las recetas: ");
         try {
@@ -217,6 +307,11 @@ public class InterfazUsuario {
         }
     }
 
+    /**
+     * Solicita al usuario la ruta del fichero y carga desde él las recetas al libro.
+     *
+     * @param scanner lector de entrada estándar
+     */
     private void cargarRecetas(Scanner scanner) {
         String nombreArchivo = leerNombreArchivoTxt(scanner, "Introduce la ruta del archivo de donde cargar las recetas: ");
         try {
@@ -227,6 +322,11 @@ public class InterfazUsuario {
         }
     }
 
+    /**
+     * Solicita al usuario el nombre del fichero y guarda en él el plan semanal.
+     *
+     * @param scanner lector de entrada estándar
+     */
     private void guardarPlanSemanal(Scanner scanner) {
         String nombreArchivo = leerNombreArchivoTxt(scanner, "Introduce el nombre del archivo donde guardar el plan semanal: ");
         try {
@@ -236,6 +336,11 @@ public class InterfazUsuario {
             System.out.println("Error al guardar el archivo: " + e.getMessage());
         }
     }
+    /**
+     * Muestra un mensaje de error por la salida estándar.
+     *
+     * @param mensaje texto del error a mostrar
+     */
     private void mostrarError(String mensaje) {
         System.out.println(mensaje);
     }

@@ -1,6 +1,7 @@
-Pasta Carbonara
-Pasta, queso, carne, huevos
-sal
+arroz con pollo
+arroz
+pollo
+fin
 INSTRUCCIONES
-1.cocer pasta
+cocer el arroz
 -----
