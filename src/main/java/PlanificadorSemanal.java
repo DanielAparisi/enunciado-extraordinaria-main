@@ -9,6 +9,7 @@ import java.nio.file.Path;
  * Permite asignar recetas a días concretos, obtener una representación
  * tabular del plan y persistirlo en un fichero de texto.
  * </p>
+ * @author Luis Salinero y Daniel Aparisi
  */
 public class PlanificadorSemanal {
 

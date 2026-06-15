@@ -7,6 +7,7 @@ import java.io.IOException;
  * Los métodos de modificación devuelven códigos de resultado que permiten
  * separar la lógica de negocio de la presentación al usuario.
  * </p>
+ * @author Luis Salinero y Daniel Aparisi
  */
 public class Receta {
 

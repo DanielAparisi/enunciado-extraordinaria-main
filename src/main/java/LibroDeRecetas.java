@@ -10,6 +10,7 @@ import java.nio.file.Path;
  * Permite agregar, buscar y eliminar recetas, así como guardar y cargar
  * el catálogo desde un fichero de texto.
  * </p>
+ * @author Luis Salinero y Daniel Aparisi
  */
 public class LibroDeRecetas {
 

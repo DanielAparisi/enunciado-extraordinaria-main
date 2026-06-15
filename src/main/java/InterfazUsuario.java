@@ -1,12 +1,14 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+
 /**
  * Gestiona la interacción con el usuario a través de un menú en consola.
  * <p>
  * Actúa como controlador principal: muestra el menú, recoge la entrada del
  * usuario y delega las operaciones en {@link LibroDeRecetas} y {@link PlanificadorSemanal}.
  * </p>
+ * @author Luis Salinero y Daniel Aparisi
  */
 public class InterfazUsuario {
 

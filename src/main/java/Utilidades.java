@@ -6,6 +6,7 @@ import java.util.Scanner;
  * Todos los métodos garantizan que el valor devuelto es válido:
  * no se retorna hasta que el usuario introduce un dato correcto.
  * </p>
+ * @author Luis Salinero y Daniel Aparisi
  */
 public class Utilidades {
 

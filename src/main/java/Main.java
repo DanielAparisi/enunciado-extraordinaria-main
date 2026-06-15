@@ -4,6 +4,7 @@
  * Recibe los parámetros de configuración por línea de comandos, inicializa
  * la {@link InterfazUsuario} y arranca el bucle principal del programa.
  * </p>
+ * @author Luis Salinero y Daniel Aparisi
  */
 public class Main {
 
